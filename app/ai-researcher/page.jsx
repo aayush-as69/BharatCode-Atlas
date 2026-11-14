@@ -35,7 +35,7 @@ export default function AIResearcher(){
     <p className="sub">Atlas retrieves matching project records first. If the BharatCode model is configured, the answer is generated only from that retrieved evidence.</p>
 
     <form className="panel section" onSubmit={ask}>
-      <textarea value={question} onChange={e=>setQuestion(e.target.value)} placeholder="Ask a research question…" rows={4} style={{width:'100%',resize:'vertical'}}/>
+      <textarea className="input" value={question} onChange={e=>setQuestion(e.target.value)} placeholder="Ask a research question…" rows={4} style={{resize:'vertical'}}/>
       <div style={{display:'flex',gap:8,marginTop:10,flexWrap:'wrap'}}>
         <button className="button" disabled={loading}>{loading?'Researching…':'Ask Atlas'}</button>
         {examples.map(x=><button type="button" className="chip" key={x} onClick={()=>setQuestion(x)}>{x}</button>)}
