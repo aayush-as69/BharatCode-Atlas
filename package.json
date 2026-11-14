@@ -6,7 +6,8 @@
     "dev":"next dev",
     "build":"next build",
     "start":"next start",
-    "verify:js":"node scripts/verify-js.mjs"
+    "verify:js":"node scripts/verify-js.mjs",
+    "data:sync":"node scripts/sync-projects.mjs"
   },
   "dependencies":{
     "next":"15.5.6",
