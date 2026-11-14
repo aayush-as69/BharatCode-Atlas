@@ -2,6 +2,7 @@ import Nav from '@/components/Nav';
 import Link from 'next/link';
 import {getProjects} from '@/lib/source';
 import {inspectRepository} from '@/lib/github';
+import StudyButton from '@/components/StudyButton';
 
 export default async function ProjectPage({params}){
   const {id}=await params;
@@ -15,7 +16,10 @@ export default async function ProjectPage({params}){
     <Link className="back" href="/explore">← Back to explorer</Link>
     <div className="detailhead" style={{marginTop:16}}>
       <div><div className="eyebrow">Project #{p.rank}</div><h1>{p.project_name}</h1><p className="prose">{p.description}</p></div>
-      <a className="button" href={p.github_repo} target="_blank" rel="noreferrer">Open GitHub ↗</a>
+      <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
+        <StudyButton project={p}/>
+        <a className="button" href={p.github_repo} target="_blank" rel="noreferrer">Open GitHub ↗</a>
+      </div>
     </div>
 
     <div className="kpis">
