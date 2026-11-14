@@ -18,4 +18,5 @@ export default async function HiddenGems(){
         </div>
       </div>)}
     </div>
-  </main></div>
+  </main></div>;
+}
