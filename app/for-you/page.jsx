@@ -103,14 +103,26 @@ export default function ForYou(){
         <div className="tags">{result.detected?.map(x=><span className="tag" key={x}>{x}</span>)}</div>
       </div>
 
-      <div className="grid" style={{marginTop:12}}>
-        {result.recommendations.map(x=><Link className="panel" href={'/projects/'+x.project.id} key={x.project.id}>
-          <div className="eyebrow">{'Match '+x.score}</div>
-          <h3>{x.project.project_name}</h3>
-          <p className="prose">{x.project.description}</p>
-          <p style={{fontSize:11,color:'var(--muted)'}}>{x.reasons.join(' · ')}</p>
-        </Link>)}
-      </div>
+      <section className="section">
+        <div className="sectionhead"><div><h2>Strong matches</h2><p>Projects with the strongest overlap with your stated and GitHub-derived interests.</p></div></div>
+        <div className="grid">{result.strongMatches?.map(x=><Link className="panel" href={'/projects/'+x.project.id} key={x.project.id}>
+          <div className="eyebrow">{'Match '+x.score}</div><h3>{x.project.project_name}</h3>
+          <p className="prose">{x.project.description}</p><p style={{fontSize:11,color:'var(--muted)'}}>{x.reasons.join(' · ')}</p>
+        </Link>)}</div>
+      </section>
+
+      <section className="section">
+        <div className="sectionhead"><div><h2>Worth exploring</h2><p>Lower-confidence matches that may still contain useful ideas.</p></div></div>
+        <div className="list">{result.worthExploring?.map(x=><Link href={'/projects/'+x.project.id} key={x.project.id}>
+          <b>{x.project.project_name}</b><small>{'Match '+x.score+' · '+x.reasons.join(' · ')}</small>
+        </Link>)}</div>
+      </section>
+
+      <section className="panel section">
+        <h2>Your technology landscape</h2>
+        <p className="prose">Signals Atlas detected from your GitHub profiles and selected interests.</p>
+        <div className="tags">{result.detected?.map(x=><span className="tag" key={x}>{x}</span>)}</div>
+      </section>
     </section>}
   </main></div>;
 }
