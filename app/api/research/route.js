@@ -1,6 +1,7 @@
 import {NextResponse} from 'next/server';
 import {getProjects} from '@/lib/source';
 import {askBharatCode} from '@/lib/ai';
+import {retrieveProjects} from '@/lib/retrieval';
 
 const MAX_BODY_BYTES=8_192;
 const MAX_QUESTION_CHARS=600;
@@ -82,10 +83,17 @@ export async function POST(req){
       );
     }
 
-    const words=normalizedQuestion.toLowerCase().split(/\s+/).filter(x=>x.length>4);
-    const projects=(await getProjects())
-      .filter(p=>words.some(w=>(p.project_name+' '+p.description).toLowerCase().includes(w)))
-      .slice(0,12);
+    const projects=retrieveProjects(await getProjects(),normalizedQuestion,12);
+
+    if(!projects.length){
+      return NextResponse.json({
+        question:normalizedQuestion,
+        projects:[],
+        answer:null,
+        error:'No project evidence matched that question. Try naming technologies such as RAG, voice, OCR, or agents.'
+      });
+    }
+
 
     const context=projects.map(p=>`#${p.rank} ${p.project_name}\n${p.description}\nVotes: ${p.votes}; GitHub stars: ${p.github_stars}; Community score: ${p.community_score}\nRepo: ${p.github_repo}`).join('\n\n');
     const prompt=`You are BharatCode Atlas Researcher. Answer only from the supplied project evidence. If the evidence is insufficient, say so. Question: ${normalizedQuestion}\n\nProject evidence:\n${context}`;

@@ -24,7 +24,7 @@ export default function Research(){
   const [items,setItems]=useState([]);
   const [selected,setSelected]=useState(null);
   const [form,setForm]=useState(empty);
-  const [collection,setCollection]=useState('General');
+  const [collection,setCollection]=useState('All');
   const [search,setSearch]=useState('');
 
   useEffect(()=>{
@@ -61,7 +61,7 @@ export default function Research(){
   function update(key,value){setForm(f=>({...f,[key]:value}));}
 
   const filtered=items.filter(x=>{
-    const hay=(x.project?.project_name+' '+x.whySaved+' '+x.learningGoal+' '+x.collection).toLowerCase();
+    const hay=((x.project?.project_name||'')+' '+x.whySaved+' '+x.learningGoal+' '+x.collection).toLowerCase();
     return hay.includes(search.toLowerCase()) && (collection==='All'||x.collection===collection);
   });
 

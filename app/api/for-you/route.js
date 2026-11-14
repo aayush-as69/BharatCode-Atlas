@@ -15,19 +15,26 @@ export async function POST(request){
       const headers={accept:'application/vnd.github+json',...(token?{authorization:'Bearer '+token}:{})};
       const collected=[];
       let firstProfile=null;
+      let rateLimited=false;
       for(const value of profiles.slice(0,5)){
         const match=value.match(/github\.com\/([^/]+)/i);
         const login=(match?match[1]:value.replace(/^@/,'')).trim();
         if(!login) continue;
         const profileRes=await fetch('https://api.github.com/users/'+encodeURIComponent(login),{headers});
-        if(!profileRes.ok) continue;
+        if(!profileRes.ok){
+          if(profileRes.status===403||profileRes.status===429) rateLimited=true;
+          continue;
+        }
         const profile=await profileRes.json();
         if(!firstProfile) firstProfile=profile;
         const reposRes=await fetch('https://api.github.com/users/'+encodeURIComponent(login)+'/repos?per_page=30&sort=updated',{headers});
         const repos=reposRes.ok?await reposRes.json():[];
         collected.push(...repos.map(r=>({name:r.name,description:r.description,language:r.language,topics:r.topics||[]})));
       }
-      if(!firstProfile && profiles.length) return Response.json({error:'No valid public GitHub profiles were found.'},{status:404});
+      if(!firstProfile && profiles.length){
+        if(rateLimited) return Response.json({error:'GitHub is rate limiting this request. Add a GITHUB_TOKEN or try again later.'},{status:429});
+        return Response.json({error:'No valid public GitHub profiles were found.'},{status:404});
+      }
       githubData={login:firstProfile.login,name:firstProfile.name,bio:firstProfile.bio,repos:collected,profiles:profiles.slice(0,5)};
     }
 
@@ -38,8 +45,8 @@ export async function POST(request){
       .sort((a,b)=>b.score-a.score||b.project.community_score-a.project.community_score)
       .slice(0,18);
 
-    const strongMatches=recommendations.filter(x=>x.score>=55).slice(0,6);
-    const worthExploring=recommendations.filter(x=>x.score<55).slice(0,8);
+    const strongMatches=recommendations.filter(x=>x.score>=45).slice(0,6);
+    const worthExploring=recommendations.filter(x=>x.score<45).slice(0,8);
     const landscape={};
     for(const r of recommendations){
       for(const reason of r.reasons||[]){

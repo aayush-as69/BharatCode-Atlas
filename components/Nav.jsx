@@ -19,7 +19,7 @@ export default function Nav(){
         <Link href="/rankings">Research Rankings</Link>
         <Link href="/ai-researcher">AI Researcher</Link>
       </nav>
-      <div style={{marginTop:28,padding:'12px',borderTop:'1px solid var(--line)',color:'var(--muted)',fontSize:10,lineHeight:1.5}}>
+      <div style={{marginTop:28,padding:'12px',borderTop:'1px solid var(--line)',color:'var(--muted)',fontSize:12,lineHeight:1.5}}>
         <b style={{color:'var(--text)'}}>Source</b><br/>
         294 published Build League projects. Atlas scores are derived research signals.
       </div>

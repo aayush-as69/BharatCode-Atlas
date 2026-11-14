@@ -62,9 +62,9 @@ It produces:
 - dependency evidence
 - architecture hypotheses
 - architecture fingerprints
-- inspected-file previews
+- redacted manifest previews
 
-Source inspection is intentionally bounded. Atlas does not request private repository access, passwords, or arbitrary secret files.
+Source inspection is intentionally bounded. File previews are limited to dependency manifests (such as `package.json`) and every preview is passed through a redaction pass that masks credential-shaped values (`KEY=value`, `"apiKey": "..."`). Environment files, credential-named paths, and arbitrary source files are never fetched or displayed, and no source-file content is persisted into the local Research Workspace snapshot. Atlas does not request private repository access, passwords, or arbitrary secret files.
 
 ## Compare
 
@@ -141,6 +141,7 @@ There is no TypeScript source, `tsconfig.json`, or TypeScript Next.js configurat
 ```bash
 npm install
 npm run verify:js
+npm test
 npm run build
 npm run dev
 ```
@@ -155,7 +156,7 @@ The repository includes a source synchronization script:
 npm run data:sync
 ```
 
-It validates that the BharatCode source currently contains the expected 294 project cards before writing the extracted dataset.
+It validates that the BharatCode source currently contains the expected 294 project cards before writing the extracted dataset, precomputes the Atlas signal classification for each row, and warns about junk rows or duplicate repository URLs so upstream data issues are visible.
 
 ## GitHub intelligence
 
@@ -165,7 +166,7 @@ The application can still inspect public repositories without a token subject to
 
 ## AI Researcher
 
-The AI Researcher first retrieves matching Atlas project records and then uses the configured model provider when available.
+The AI Researcher first retrieves matching Atlas project records using a stopword-filtered, word-boundary keyword retrieval (ranked by distinct term hits), and then uses the configured model provider when available. Requests are rate-limited, bounded in size, and the model call enforces a timeout.
 
 The interface exposes retrieved project evidence alongside the answer so users can inspect the underlying projects.
 
@@ -178,14 +179,18 @@ Atlas pins its direct production dependency versions in `package.json`. Next.js 
 GitHub Actions runs:
 
 ```text
-npm install
+npm ci
     ↓
-npm run verify:js
+npm run verify:js        (JavaScript-only rule + dataset integrity at build time)
+    ↓
+npm test                 (node --test: retrieval, redaction, source scoring)
+    ↓
+npm run audit:prod
     ↓
 npm run build
 ```
 
-This protects the JavaScript-only requirement and catches production-build regressions.
+This protects the JavaScript-only requirement, validates the dataset before building, and catches production-build regressions. The workflow declares `permissions: contents: read` and pins its actions to full commit SHAs.
 
 ## Current limitations
 
