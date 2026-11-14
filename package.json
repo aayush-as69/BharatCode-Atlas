@@ -14,5 +14,9 @@
     "react": "19.2.1",
     "react-dom": "19.2.1",
     "openai": "^6.16.0"
+  },
+  "packageManager": "npm@11.6.2",
+  "engines": {
+    "node": ">=20.0.0"
   }
 }
