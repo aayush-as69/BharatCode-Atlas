@@ -77,6 +77,16 @@ export default async function Compare({searchParams}){
     </section>
 
     <section className="panel section">
+      <div className="sectionhead"><div><h2>Architecture fingerprints</h2><p>Concrete implementation layers detected from selected repository files and public metadata.</p></div></div>
+      <div className="grid">{inspected.map(p=><div className="panel" key={p.id}>
+        <h3>{p.project_name}</h3>
+        {p.repo.ok&&p.repo.evidence?.architecture_fingerprint?.length
+          ? <div className="list">{p.repo.evidence.architecture_fingerprint.map(x=><div key={x.layer}><b>{x.layer}</b><small>{x.signal} · {x.evidence.join(' · ')}</small></div>)}</div>
+          : <p className="prose">No architecture fingerprint signals were detected.</p>}
+      </div>)}</div>
+    </section>
+
+    <section className="panel section">
       <h2>Evidence behind the comparison</h2>
       <p className="prose">Signals below come from public repository paths and README content. They are evidence indicators, not a full source-code audit.</p>
       <div className="grid">{inspected.map(p=><div className="panel" key={p.id}>
