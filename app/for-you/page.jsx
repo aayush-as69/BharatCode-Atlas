@@ -89,7 +89,10 @@ export default function ForYou(){
           </div>
           <button className="button" style={{marginTop:20}} onClick={run} disabled={loading}>{loading?'Building your profile…':'Refresh recommendations →'}</button>
           <button type="button" className="tag" style={{marginTop:10,display:'block'}} onClick={clear}>Clear profile</button>
-          <p style={{fontSize:11,color:'var(--muted)',marginTop:14}}>Saved locally in this browser. Atlas does not need an account for this mode.</p>
+          <div className="panel" style={{marginTop:14,padding:12}}>
+            <b style={{fontSize:11}}>Privacy note</b>
+            <p style={{fontSize:10,color:'var(--muted)',lineHeight:1.6,margin:'6px 0 0'}}>For You uses public GitHub profile/repository information plus the interests you provide. Your profile settings and recommendations are saved in this browser's local storage. Atlas does not need your GitHub password or private repository access.</p>
+          </div>
         </div>
       </div>
     </section>
