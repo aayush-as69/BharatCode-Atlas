@@ -20,7 +20,7 @@ function parseProject(raw,index){
   const stars=numberFrom(raw.match(/title="GitHub stars">[\s\S]*?<dd>([^<]+)/)?.[1]||0);
   const score=numberFrom(raw.match(/Community score:\s*([\d.]+)/)?.[1]||0);
   const repo=raw.match(/class="hackathon-project-repo" href="([^"]+)"/)?.[1]||'';
-  return {id:`p${String(rank).padStart(3,'0')`,rank,project_name:name,description,votes,github_stars:stars,community_score:score,github_repo:repo};
+  return {id:`p${String(rank).padStart(3,'0')}`,rank,project_name:name,description,votes,github_stars:stars,community_score:score,github_repo:repo};
 }
 const res=await fetch(SOURCE);
 if(!res.ok) throw new Error(`Source returned ${res.status}`);
