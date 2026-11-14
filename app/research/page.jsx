@@ -102,6 +102,14 @@ export default function Research(){
 
       <div className="tags">{statuses.map(x=><button key={x} className={'tag '+(form.status===x?'active':'')} onClick={()=>update('status',x)}>{x}</button>)}</div>
 
+      {form.repositoryIntelligence?.ok?<section className="panel" style={{marginTop:14}}>
+        <div className="sectionhead"><div><h3>Saved repository evidence</h3><p>Snapshot captured when this research entry was created.</p></div></div>
+        <div className="tags">{(form.repositoryIntelligence.technologies||[]).map(x=><span className="tag" key={x}>{x}</span>)}</div>
+        {form.repositoryIntelligence.evidence?.architecture_fingerprint?.length?<div className="list" style={{marginTop:10}}>
+          {form.repositoryIntelligence.evidence.architecture_fingerprint.map(x=><div key={x.layer}><b>{x.layer}</b><small>{x.signal+' · '+x.evidence.join(' · ')}</small></div>)}
+        </div>:null}
+      </section>:null}
+
       <div className="two" style={{marginTop:16}}>
         {[
           ['collection','Collection',collections],
