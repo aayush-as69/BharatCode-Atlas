@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Nav from '@/components/Nav';
 import {getProjects,classify,relevance,hiddenGem} from '@/lib/source';
 import {inspectRepository} from '@/lib/github';
+import CompareStudyButton from '@/components/CompareStudyButton';
 
 export default async function Compare({searchParams}){
   const sp=await searchParams;
@@ -39,6 +40,10 @@ export default async function Compare({searchParams}){
     </form>
 
     <section className="panel section">
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',gap:12,marginBottom:12}}>
+        <div><h2>Research this comparison</h2><p className="prose">Save the selected implementations as a study task.</p></div>
+        {inspected.length>=2&&<CompareStudyButton projects={inspected}/>}
+      </div>
       <div style={{overflowX:'auto'}}>
         <table style={{width:'100%',borderCollapse:'collapse',fontSize:12}}>
           <thead><tr><th style={{textAlign:'left',padding:12}}>Source signal</th>{inspected.map(p=><th key={p.id} style={{textAlign:'left',padding:12,minWidth:190}}><Link href={'/projects/'+p.id}>{p.project_name}</Link><div style={{fontSize:10,color:'var(--muted)',marginTop:4}}>#{p.rank}</div></th>)}</tr></thead>
