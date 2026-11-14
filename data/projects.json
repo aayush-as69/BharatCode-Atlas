@@ -1,0 +1,1000 @@
+[
+  {
+    "id": "p001",
+    "rank": 1,
+    "project_name": "TRINETRA",
+    "description": "TRINETRA is an AI-powered cybersecurity system designed to protect India from hacking, online fraud, fake videos and cyberattacks. Its Dual Core Engine uses mathematics to check…",
+    "votes": 106,
+    "github_stars": 83,
+    "community_score": 100.0,
+    "github_repo": "https://github.com/SRIBENDUPRASADMUDULI/Trinetra"
+  },
+  {
+    "id": "p002",
+    "rank": 2,
+    "project_name": "BharatCode Visual Studio Code Extension",
+    "description": "A native and highly customizable agentic harness for BharatCode.\nSimple & quick setup for your BharatCode account",
+    "votes": 74,
+    "github_stars": 77,
+    "community_score": 81.3,
+    "github_repo": "https://github.com/thenabbu/BharatCode-VSCode-Extension"
+  },
+  {
+    "id": "p003",
+    "rank": 3,
+    "project_name": "ashby-job-scraper",
+    "description": "Free job board that pulls 90,000+ open jobs from 2,000+ companies straight from their own career pages on Ashby, Greenhouse, Lever, Workday, SmartRecruiters, Workable, Recruitee,…",
+    "votes": 18,
+    "github_stars": 65,
+    "community_score": 47.6,
+    "github_repo": "https://github.com/rishilahoti/ashby-job-scraper"
+  },
+  {
+    "id": "p004",
+    "rank": 4,
+    "project_name": "LearnOS",
+    "description": "LearnOS is an AI-powered student learning and career development platform designed to make education smarter, more accessible, and personalized. It brings essential learning tools…",
+    "votes": 23,
+    "github_stars": 60,
+    "community_score": 47.0,
+    "github_repo": "https://github.com/shashank-785/TEAMBREAK"
+  },
+  {
+    "id": "p005",
+    "rank": 5,
+    "project_name": "OrvynAi — Adaptive AI Interview & Skill Assessment Platform",
+    "description": "OrvynAi is an AI-powered adaptive interview platform that analyzes a candidate’s resume and target job description to create personalized technical interviews. It dynamically…",
+    "votes": 59,
+    "github_stars": 19,
+    "community_score": 39.3,
+    "github_repo": "https://github.com/itzVarun1426/OrvynAI"
+  },
+  {
+    "id": "p006",
+    "rank": 6,
+    "project_name": "Form2Fact — Evidence-First Document Intelligence",
+    "description": "Form2Fact is an AI-powered document verification platform that extracts and compares information across institutional documents, identifies mismatches and missing evidence, and…",
+    "votes": 27,
+    "github_stars": 44,
+    "community_score": 39.2,
+    "github_repo": "https://github.com/shinchxn/form2fact"
+  },
+  {
+    "id": "p007",
+    "rank": 7,
+    "project_name": "Harness that upgrades BharatCode Desktop with command pack",
+    "description": "Type /auto and your task runs on whichever model starts it sooner. A command pack adds /deep-research (cited reports, references checked against OpenAlex, Crossref and arXiv),…",
+    "votes": 26,
+    "github_stars": 31,
+    "community_score": 30.9,
+    "github_repo": "https://github.com/subidhkhanal/spare-gpu"
+  },
+  {
+    "id": "p008",
+    "rank": 8,
+    "project_name": "GitKitty",
+    "description": "🐾 GitKitty: understand any repo before you hand it to an AI.\n\nKitty is a pixel cat that lives on GitHub. Click it on any repo and it walks you through the codebase, file by file,…",
+    "votes": 13,
+    "github_stars": 38,
+    "community_score": 29.0,
+    "github_repo": "https://github.com/Krish6115/GitKitty"
+  },
+  {
+    "id": "p009",
+    "rank": 9,
+    "project_name": "Anonymous Campus",
+    "description": "Anonymous Campus is a privacy-first campus facility feedback platform built for IIIT Sonepat. It enables students to share honest feedback about mess, laundry, Wi-Fi, room…",
+    "votes": 12,
+    "github_stars": 36,
+    "community_score": 27.3,
+    "github_repo": "https://github.com/rohitjee7022-blip/Anonymous-Campus"
+  },
+  {
+    "id": "p010",
+    "rank": 10,
+    "project_name": "PayGuard AI - Your payments. Smarter, safer, simpler.",
+    "description": "💡 Making digital payments smarter, safer, and more transparent!\n\nKey Features:\n\n📄 AI Bill Intelligence: Extracts important details from bills using OCR and AI.\n\n🔍 Duplicate…",
+    "votes": 26,
+    "github_stars": 25,
+    "community_score": 27.3,
+    "github_repo": "https://github.com/mannanloomba/PayGuard.git"
+  },
+  {
+    "id": "p011",
+    "rank": 11,
+    "project_name": "CyberNetX: Detect. Trace. Neutralize",
+    "description": "CyberNetX is a consent-first, end-to-end scam defence pipeline: it blocks AI-written UPI scams on the phone, then traces the stolen money back to the collector. ShieldNetX…",
+    "votes": 23,
+    "github_stars": 21,
+    "community_score": 23.5,
+    "github_repo": "https://github.com/learnfast12/cybernetx-bharatcode"
+  },
+  {
+    "id": "p012",
+    "rank": 12,
+    "project_name": "Nazar – free AI code review for every Indian developer",
+    "description": "Nazar is a free, open-source AI code reviewer for every Indian developer, powered by the BharatCode API (qwen-3.8-27b). Add one YAML file and every pull request (or push to main)…",
+    "votes": 31,
+    "github_stars": 10,
+    "community_score": 20.6,
+    "github_repo": "https://github.com/Ironankit525/nazar"
+  },
+  {
+    "id": "p013",
+    "rank": 13,
+    "project_name": "Pharos",
+    "description": "Pharos is an AI-powered Linux configuration assistant for Ubuntu. It helps you understand your system, investigate configuration issues, and safely make changes without blindly…",
+    "votes": 17,
+    "github_stars": 19,
+    "community_score": 19.5,
+    "github_repo": "https://github.com/YashmitVaish/Pharos"
+  },
+  {
+    "id": "p014",
+    "rank": 14,
+    "project_name": "AI Legacy Bridge — AI-Powered Code Intelligence",
+    "description": "**Problem:** Developers often inherit years-old, undocumented codebases written by engineers who have left the company. Understanding architecture, tracing dependencies, and…",
+    "votes": 16,
+    "github_stars": 14,
+    "community_score": 16.0,
+    "github_repo": "https://github.com/aadityahammad-2002/AI-Legacy-Bridge"
+  },
+  {
+    "id": "p015",
+    "rank": 15,
+    "project_name": "TrustForge",
+    "description": "TrustForge is an AI-powered security and reliability testing platform that helps developers build safer, more trustworthy AI agents using BharatCode AI.\n\nIt enables developers to…",
+    "votes": 7,
+    "github_stars": 21,
+    "community_score": 16.0,
+    "github_repo": "https://github.com/Sumit4374/TrustForge"
+  },
+  {
+    "id": "p016",
+    "rank": 16,
+    "project_name": "JBSnap",
+    "description": "Traditional low-code builders lock backend logic inside proprietary clouds, charging per-execution fees and making migration impossible. JBSnap eliminates this vendor lock-in by…",
+    "votes": 18,
+    "github_stars": 9,
+    "community_score": 13.9,
+    "github_repo": "https://github.com/Jinay-Bhatt/jbsnap.git"
+  },
+  {
+    "id": "p017",
+    "rank": 17,
+    "project_name": "Folio",
+    "description": "FOLIO: Drop your files, say what they are, and find everything later.\n\nFolio is a private, local-first desktop app for Windows and Linux. Drop in\nfiles or a folder and describe…",
+    "votes": 3,
+    "github_stars": 16,
+    "community_score": 11.1,
+    "github_repo": "https://github.com/sreenivasivbieb/folio"
+  },
+  {
+    "id": "p018",
+    "rank": 18,
+    "project_name": "EklavyaX",
+    "description": "EklavyaX is a gamified AI learning platform for students and teachers, combining AI tutoring, virtual labs, assignments, progress tracking, and rewards.",
+    "votes": 16,
+    "github_stars": 3,
+    "community_score": 9.4,
+    "github_repo": "https://github.com/Sayandevxyz/EklavyaX"
+  },
+  {
+    "id": "p019",
+    "rank": 19,
+    "project_name": "Prahari",
+    "description": "Prahari (\"The Sentinel\") is an advanced tourist safety, heritage navigation, and geo-intelligence platform built to eliminate travel blind spots across remote terrain, border…",
+    "votes": 14,
+    "github_stars": 4,
+    "community_score": 9.0,
+    "github_repo": "https://github.com/thusharks1234-byte/Prahari.git"
+  },
+  {
+    "id": "p020",
+    "rank": 20,
+    "project_name": "Bharat_Build",
+    "description": "ClauseStream is a smart AI middleware that helps AI assistants determine which retrieved rules actually apply to a user's situation, instead of simply retrieving information or…",
+    "votes": 14,
+    "github_stars": 2,
+    "community_score": 7.8,
+    "github_repo": "https://github.com/Sneha21-09/Bharat_Build"
+  },
+  {
+    "id": "p021",
+    "rank": 21,
+    "project_name": "MergeSutra",
+    "description": "AI can propose a fix. MergeSutra demands evidence.\n\nBuilt on BharatCode's model API, MergeSutra is an evidence-first CLI that turns GitHub issues into reviewable, human-controlled…",
+    "votes": 5,
+    "github_stars": 9,
+    "community_score": 7.8,
+    "github_repo": "https://github.com/Pavithran-R-A/mergesutra"
+  },
+  {
+    "id": "p022",
+    "rank": 22,
+    "project_name": "AI Study Buddy (PDF Chat)",
+    "description": "An AI-powered Study Buddy built with Streamlit, LangChain, ChromaDB, and Groq API. It helps students upload PDF textbooks and ask questions to get accurate answers with exact…",
+    "votes": 2,
+    "github_stars": 11,
+    "community_score": 7.6,
+    "github_repo": "https://github.com/Chaudhary-Momna/RAG-PDF-Chatbot"
+  },
+  {
+    "id": "p023",
+    "rank": 23,
+    "project_name": "Curriculo",
+    "description": "Turn any Git repository into a guided, interactive course. Point it at a repo, and Curriculo reads the code, orders the concepts, and produces a learning path: sequenced lessons…",
+    "votes": 2,
+    "github_stars": 11,
+    "community_score": 7.6,
+    "github_repo": "https://github.com/Darshit42/Curriculo"
+  },
+  {
+    "id": "p024",
+    "rank": 24,
+    "project_name": "Soren - Software Reasoning Navigator",
+    "description": "Soren is an open-source desktop planner for people who run several coding agents (Claude Code, Codex and others) under usage limits. Describe an idea and BharatCode's qwen-3.8-27b…",
+    "votes": 4,
+    "github_stars": 9,
+    "community_score": 7.3,
+    "github_repo": "https://github.com/realwarp/soren"
+  },
+  {
+    "id": "p025",
+    "rank": 25,
+    "project_name": "StrayWatch",
+    "description": "StrayWatch is a free AI app for India’s community animals, built in Ranchi. Every street has someone who feeds dogs and cows daily, yet when one is hurt nobody knows whom to call,…",
+    "votes": 0,
+    "github_stars": 12,
+    "community_score": 7.2,
+    "github_repo": "https://github.com/meenakshisatpathy20-del/STRAYWATCH"
+  },
+  {
+    "id": "p026",
+    "rank": 26,
+    "project_name": "AI-StudyMate",
+    "description": "An AI-powered study assistant that helps students understand topics, generate quizzes, and practise concepts interactively.",
+    "votes": 5,
+    "github_stars": 8,
+    "community_score": 7.2,
+    "github_repo": "https://github.com/Siddu-119/AI-StudyMate"
+  },
+  {
+    "id": "p027",
+    "rank": 27,
+    "project_name": "CounterPilot",
+    "description": "CounterPilot is a production-grade retail operating counter and conversational AI store copilot built for Indian neighborhood retail and kirana stores. It unites high-speed POS…",
+    "votes": 5,
+    "github_stars": 8,
+    "community_score": 7.2,
+    "github_repo": "https://github.com/GHrushikesh/CounterPilot"
+  },
+  {
+    "id": "p028",
+    "rank": 28,
+    "project_name": "ShopAI",
+    "description": "ShopAI is an AI-powered shopping assistant built using React Native and JavaScript. It enables users to search for products, get AI-based recommendations, and compare products…",
+    "votes": 15,
+    "github_stars": 0,
+    "community_score": 7.1,
+    "github_repo": "https://github.com/AbhaySingh034/ShopAI"
+  },
+  {
+    "id": "p029",
+    "rank": 29,
+    "project_name": "Archaeologist CLI",
+    "description": "While tools like Copilot explain what code does today, Archaeologist CLI uncovers why it exists. It is an autonomous\n  forensic code intelligence engine and native Model Context…",
+    "votes": 3,
+    "github_stars": 9,
+    "community_score": 6.8,
+    "github_repo": "https://github.com/avyaansharma/archaeologist-cli"
+  },
+  {
+    "id": "p030",
+    "rank": 30,
+    "project_name": "RepoWorld",
+    "description": "RepoWorld transforms public GitHub repositories into interactive 3D code cities, helping developers understand unfamiliar projects and discover opportunities to contribute.\n\nUsers…",
+    "votes": 10,
+    "github_stars": 3,
+    "community_score": 6.5,
+    "github_repo": "https://github.com/S-h-u-b-h-1/RepoWorld"
+  },
+  {
+    "id": "p031",
+    "rank": 31,
+    "project_name": "IssuePilot",
+    "description": "IssuePilot is an open-source issue-to-PR agent for Python repositories. It reads an issue, finds the relevant code with a local retrieval stack, writes a reproduction test, drafts…",
+    "votes": 3,
+    "github_stars": 8,
+    "community_score": 6.2,
+    "github_repo": "https://github.com/aeyjeyaryan/IssuePilot"
+  },
+  {
+    "id": "p032",
+    "rank": 32,
+    "project_name": "LifePilot",
+    "description": "LifePilot AI is an AI-powered personal assistant designed to simplify everyday activities through a unified platform. It includes three major modules: Smart Trip Planner, which…",
+    "votes": 13,
+    "github_stars": 0,
+    "community_score": 6.1,
+    "github_repo": "https://github.com/pratikgorade826-create/LifePilot"
+  },
+  {
+    "id": "p033",
+    "rank": 33,
+    "project_name": "RivalRadar",
+    "description": "RivalRadar is an AI-powered competitive intelligence platform that helps local businesses understand their competitors and discover market opportunities. It uses a multi-agent…",
+    "votes": 4,
+    "github_stars": 6,
+    "community_score": 5.5,
+    "github_repo": "https://github.com/Paraschamoli/RivalRadar"
+  },
+  {
+    "id": "p034",
+    "rank": 34,
+    "project_name": "Bharat Swasthya AI",
+    "description": "BharatSwasthya AI is an AI-powered healthcare accessibility and public health intelligence platform designed to make healthcare more accessible, efficient, and proactive across…",
+    "votes": 9,
+    "github_stars": 2,
+    "community_score": 5.5,
+    "github_repo": "https://github.com/Fenil-1807/Bharat_Swasthaya_Full.git"
+  },
+  {
+    "id": "p035",
+    "rank": 35,
+    "project_name": "AlgoBuddy-AI",
+    "description": "AlgoBuddy AI is an AI-powered DSA learning companion that helps students understand Data Structures and Algorithms through beginner-friendly explanations, topic-based practice…",
+    "votes": 9,
+    "github_stars": 2,
+    "community_score": 5.5,
+    "github_repo": "https://github.com/Ritika-07143/AlgoBuddy-AI"
+  },
+  {
+    "id": "p036",
+    "rank": 36,
+    "project_name": "ReviewBharat",
+    "description": "ReviewBharat: AI code review that speaks your language. It reviews GitHub PRs, diffs and staged changes with Qwen 3.8 27B and explains every finding in English, Hinglish or Hindi,…",
+    "votes": 0,
+    "github_stars": 9,
+    "community_score": 5.4,
+    "github_repo": "https://github.com/SoAkeD1/reviewbharat"
+  },
+  {
+    "id": "p037",
+    "rank": 37,
+    "project_name": "Showboard",
+    "description": "Showboard is an open-source MCP server that lets Claude Code, Codex, Cursor, Gemini CLI and other coding agents answer questions about your SQL database, or a folder of Excel and…",
+    "votes": 2,
+    "github_stars": 7,
+    "community_score": 5.2,
+    "github_repo": "https://github.com/rohanbeingsocial/showboard"
+  },
+  {
+    "id": "p038",
+    "rank": 38,
+    "project_name": "Axomiya Study Companion",
+    "description": "Axomiya Study Companion is an AI tutor built for Assamese-medium school students preparing for SEBA and AHSEC exams. Most AI study tools answer in English with generic examples;…",
+    "votes": 7,
+    "github_stars": 3,
+    "community_score": 5.1,
+    "github_repo": "https://github.com/prayashcloud/axomiya-study-companion"
+  },
+  {
+    "id": "p039",
+    "rank": 39,
+    "project_name": "VidyaVerse",
+    "description": "VIDYAVERSE is an AI-powered learning and coding platform that transforms traditional learning into practical, project-based education. It offers structured Python and Artificial…",
+    "votes": 7,
+    "github_stars": 3,
+    "community_score": 5.1,
+    "github_repo": "https://github.com/ashwini2134/VidyaVerse"
+  },
+  {
+    "id": "p040",
+    "rank": 40,
+    "project_name": "Bill Shock Explainer",
+    "description": "Many people pay bills they can't fully read: electricity, phone, hospital, school fees. Double charges and vague \"adjustments\" slip through because the language is confusing, and…",
+    "votes": 4,
+    "github_stars": 5,
+    "community_score": 4.9,
+    "github_repo": "https://github.com/sanchitajanbandhu3-hub/SOLO-ZEN"
+  },
+  {
+    "id": "p041",
+    "rank": 41,
+    "project_name": "marg",
+    "description": "Marg is a CLI that reads a repository with read-only tools and writes ONBOARDING.md: how to run the project, an architecture diagram, a walkthrough of one real flow, starter tasks…",
+    "votes": 2,
+    "github_stars": 6,
+    "community_score": 4.6,
+    "github_repo": "https://github.com/Mqhnish/marg"
+  },
+  {
+    "id": "p042",
+    "rank": 42,
+    "project_name": "algoxai",
+    "description": "Coding Harness for Indic LLMs.",
+    "votes": 3,
+    "github_stars": 5,
+    "community_score": 4.4,
+    "github_repo": "https://github.com/Lokesh-102214/algoxai"
+  },
+  {
+    "id": "p043",
+    "rank": 43,
+    "project_name": "GitVigil - Automated Security & Secret-Leak Scanner for CI/CD",
+    "description": "GitVigil is an enterprise-grade automated security scanner built for modern engineering teams and CI/CD pipelines. It utilizes a Python-based multi-pattern regex engine to…",
+    "votes": 4,
+    "github_stars": 4,
+    "community_score": 4.3,
+    "github_repo": "https://github.com/Palakkarwade07/GitVigil-Automated-Security-Secret-Leak-Scanner-for-Indian-Tech-Startups"
+  },
+  {
+    "id": "p044",
+    "rank": 44,
+    "project_name": "She-ield",
+    "description": "She-ield is a women’s safety platform that enables instant SOS alerts using person's speech, live location sharing, secure audio recording, trusted contacts, and AI-powered…",
+    "votes": 4,
+    "github_stars": 4,
+    "community_score": 4.3,
+    "github_repo": "https://github.com/Aayansh-singh-24/She-ield"
+  },
+  {
+    "id": "p045",
+    "rank": 45,
+    "project_name": "NYAYA-AI",
+    "description": "Freelancers lose millions to chargebacks simply because their evidence is messy. I built Nyaya AI (न्याय) to fix this. It is a Sovereign AI defense engine that cross-references…",
+    "votes": 4,
+    "github_stars": 4,
+    "community_score": 4.3,
+    "github_repo": "https://github.com/ursarthak001/NYAYA-AI"
+  },
+  {
+    "id": "p046",
+    "rank": 46,
+    "project_name": "Crystal",
+    "description": "Explore, build, debug, and collaborate with AI agents, done all within one development environment.\nCoding Agent & Harness: Code generation, editing, terminal execution,…",
+    "votes": 9,
+    "github_stars": 0,
+    "community_score": 4.2,
+    "github_repo": "https://github.com/Saatwik-ss/Crystal-Desktop"
+  },
+  {
+    "id": "p047",
+    "rank": 47,
+    "project_name": "SecureLLM: Privacy-Preserving CLI for Secure LLM Code Consultation",
+    "description": "SecureLLM  is an open-source, privacy-preserving Python CLI tool that lets developers safely consult Large Language Models (LLMs) like ChatGPT, Claude, or Gemini on proprietary…",
+    "votes": 9,
+    "github_stars": 0,
+    "community_score": 4.2,
+    "github_repo": "https://github.com/Imafrah/secure-llm-consultation"
+  },
+  {
+    "id": "p048",
+    "rank": 48,
+    "project_name": "AksharaCheck",
+    "description": "AksharaCheck finds Hindi and Kannada text that websites render wrongly: broken letters, clipped vowel marks, overflowing lines and text tagged with the wrong language. It opens a…",
+    "votes": 5,
+    "github_stars": 3,
+    "community_score": 4.2,
+    "github_repo": "https://github.com/ashh-droid/AksharaCheck"
+  },
+  {
+    "id": "p049",
+    "rank": 49,
+    "project_name": "DaastaVault",
+    "description": "A document explainer where the agent calls explain in 3 languages i.e. English, Hindi and Hinglish about helping people sort their confusion about Tax documents, Rent, Banking…",
+    "votes": 1,
+    "github_stars": 6,
+    "community_score": 4.1,
+    "github_repo": "https://github.com/Anhad-Sharma-26/dastaavault"
+  },
+  {
+    "id": "p050",
+    "rank": 50,
+    "project_name": "Kosh — Minimalist Creative MCP Studio & Headless Blender Engine",
+    "description": "Kosh is an open-source, developer-first Model Context Protocol (MCP) server and interactive CAD studio for 3D procedural modeling, animation, and digital fabrication.\n\nPowered by…",
+    "votes": 3,
+    "github_stars": 4,
+    "community_score": 3.8,
+    "github_repo": "https://github.com/SachinyadavAug20/kosh"
+  },
+  {
+    "id": "p051",
+    "rank": 51,
+    "project_name": "GitVideo",
+    "description": "Turn any public GitHub repo into a narrated 60-90 second explainer video. Paste a link and get a walkthrough of the key files, the dependency graph, and how it all connects and…",
+    "votes": 3,
+    "github_stars": 4,
+    "community_score": 3.8,
+    "github_repo": "https://github.com/Akash4406pal/GitVideo"
+  },
+  {
+    "id": "p052",
+    "rank": 52,
+    "project_name": "none ignore",
+    "description": "none ignore",
+    "votes": 1,
+    "github_stars": 5,
+    "community_score": 3.5,
+    "github_repo": "https://github.com/realwarp/FLUX"
+  },
+  {
+    "id": "p053",
+    "rank": 53,
+    "project_name": "FLUX - Terminal-Native AI Coding Agent",
+    "description": "FLUX is a terminal-native AI coding agent built with TypeScript and Bun. It brings AI-assisted development directly into the terminal with model switching, session management,…",
+    "votes": 1,
+    "github_stars": 5,
+    "community_score": 3.5,
+    "github_repo": "https://github.com/realwarp/FLUX"
+  },
+  {
+    "id": "p054",
+    "rank": 54,
+    "project_name": "GitSurgeon",
+    "description": "GitSurgeon is an autonomous coding harness powered by BharatCode that automates bug reproduction and repair. Instead of guessing code fixes, GitSurgeon scouts the codebase,…",
+    "votes": 1,
+    "github_stars": 5,
+    "community_score": 3.5,
+    "github_repo": "https://github.com/Dheerajkumar129/gitsurgeon"
+  },
+  {
+    "id": "p055",
+    "rank": 55,
+    "project_name": "CodeAcharya – AI-Powered Coding Mentor",
+    "description": "CodeAcharya is an AI-powered coding mentorship platform that helps students learn programming through hands-on practice and personalized guidance. Powered by the BharatCode API as…",
+    "votes": 1,
+    "github_stars": 5,
+    "community_score": 3.5,
+    "github_repo": "https://github.com/heyranjanshaw07/CodeAcharya"
+  },
+  {
+    "id": "p056",
+    "rank": 56,
+    "project_name": "BharatCLI",
+    "description": "Terminal AI Pair Programmer & Code Review Agent powered by BharatCode Qwen 3.8 27B",
+    "votes": 0,
+    "github_stars": 5,
+    "community_score": 3.0,
+    "github_repo": "https://github.com/krishnashrma123qwe-debug/bharat-cli"
+  },
+  {
+    "id": "p057",
+    "rank": 57,
+    "project_name": "Udbhava",
+    "description": "What if you could control the narrative of an entire social media platform using autonomous AI agents?\n    Well, that is illegal. :)\n    Here is what I built instead:\n\n    Udbhava…",
+    "votes": 0,
+    "github_stars": 5,
+    "community_score": 3.0,
+    "github_repo": "https://github.com/madanVedansh21/Udbhava"
+  },
+  {
+    "id": "p058",
+    "rank": 58,
+    "project_name": "Horizon Ai",
+    "description": "Horizon is an AI-powered Windows desktop automation assistant designed to transform natural language and interactive voice commands into real operating system actions. Built using…",
+    "votes": 0,
+    "github_stars": 5,
+    "community_score": 3.0,
+    "github_repo": "https://github.com/Andycs09/Horizon"
+  },
+  {
+    "id": "p059",
+    "rank": 59,
+    "project_name": "Agent Autopsy",
+    "description": "Agent Autopsy finds why an AI agent failed and gives you the fix. Developers paste a failed run (objective, system prompt, model response, tool call, tool output, error) into a…",
+    "votes": 6,
+    "github_stars": 0,
+    "community_score": 2.8,
+    "github_repo": "https://github.com/ArokiaNisha/agent-autopsy"
+  },
+  {
+    "id": "p060",
+    "rank": 60,
+    "project_name": "LatencyZero - Autonomous API Load-Tester & Self-Healing Code Optimizer",
+    "description": "Cut backend API latency by up to 40x autonomously. LatencyZero is an agentic performance harness powered by the BharatCode API that fires 50 concurrent async requests to benchmark…",
+    "votes": 4,
+    "github_stars": 1,
+    "community_score": 2.5,
+    "github_repo": "https://github.com/Shiivu13/LatencyZero---Autonomous-API-Load-Tester-Self-Healing-Code-Optimizer"
+  },
+  {
+    "id": "p061",
+    "rank": 61,
+    "project_name": "contextbridge-ai",
+    "description": "ContextBridge transforms passive video watching into active, self-directed exploration.",
+    "votes": 5,
+    "github_stars": 0,
+    "community_score": 2.4,
+    "github_repo": "https://github.com/lvhNaruto/contextbridge-ai"
+  },
+  {
+    "id": "p062",
+    "rank": 62,
+    "project_name": "TestPilot AI",
+    "description": "TestPilot AI is an AI-powered API testing assistant that uses Adaption AI to automatically generate structured API test cases from natural-language descriptions and OpenAPI…",
+    "votes": 5,
+    "github_stars": 0,
+    "community_score": 2.4,
+    "github_repo": "https://github.com/puttajanhavi21/TestPilot-AI"
+  },
+  {
+    "id": "p063",
+    "rank": 63,
+    "project_name": "AI-Powered Hackathon Team Builder",
+    "description": "AI-Powered Hackathon Team Builder is a MERN stack platform designed to help students discover hackathons and build compatible teams. It provides AI-driven teammate recommendations…",
+    "votes": 1,
+    "github_stars": 3,
+    "community_score": 2.3,
+    "github_repo": "https://github.com/Techi-Harshit/AI-Hackthon-Team-Builder"
+  },
+  {
+    "id": "p064",
+    "rank": 64,
+    "project_name": "EduBridge",
+    "description": "EduBridge is a free, student-friendly online learning platform designed to make education accessible to everyone. It provides learning resources, AI-based assistance, quizzes, and…",
+    "votes": 1,
+    "github_stars": 3,
+    "community_score": 2.3,
+    "github_repo": "https://github.com/AshwinKumarMR-07/EduBridge"
+  },
+  {
+    "id": "p065",
+    "rank": 65,
+    "project_name": "StudyBrief – AI Research & Study Companion",
+    "description": "Paste a topic, an article or class notes and get a structured study brief: key points, a plain-language explanation, key terms, a flip-card quiz and an Explain-like-I'm-15…",
+    "votes": 1,
+    "github_stars": 3,
+    "community_score": 2.3,
+    "github_repo": "https://github.com/suganthikannan093-hue/studybrief"
+  },
+  {
+    "id": "p066",
+    "rank": 66,
+    "project_name": "Legal AI Assistant (ContractIQ)",
+    "description": "The most interesting thing I've built is **ContractIQ**, an AI-powered desktop application for contract intelligence. It can extract and classify legal clauses, generate…",
+    "votes": 2,
+    "github_stars": 2,
+    "community_score": 2.1,
+    "github_repo": "https://github.com/Akshat5204/legal-ai-assistant"
+  },
+  {
+    "id": "p067",
+    "rank": 67,
+    "project_name": "CyberTrace — AI-Assisted SOC Incident Investigation Platform",
+    "description": "CyberTrace is a defensive, AI-assisted Security Operations Center platform that turns heterogeneous security logs into normalized events, evaluates deterministic detection rules,…",
+    "votes": 2,
+    "github_stars": 2,
+    "community_score": 2.1,
+    "github_repo": "https://github.com/PrathviSahu/CyberTrace"
+  },
+  {
+    "id": "p068",
+    "rank": 68,
+    "project_name": "PrepPilot",
+    "description": "AI-powered personalized learning assistant featuring study planning, quiz generation and answer evaluation.powered by BharatCode.",
+    "votes": 2,
+    "github_stars": 2,
+    "community_score": 2.1,
+    "github_repo": "https://github.com/abhishekwakade/PrepPilot"
+  },
+  {
+    "id": "p069",
+    "rank": 69,
+    "project_name": "DocuCheck AI – Intelligent Document Comparison & Analysis",
+    "description": "DocuCheck AI is an AI-powered document comparison platform that helps users identify changes, missing information, and inconsistencies between two documents. It extracts content…",
+    "votes": 3,
+    "github_stars": 1,
+    "community_score": 2.0,
+    "github_repo": "https://github.com/Tanya-garg10/DocuCheck-AI-Intelligent-Document-Comparison-Analysis.git"
+  },
+  {
+    "id": "p070",
+    "rank": 70,
+    "project_name": "AGENT-PAY",
+    "description": "Agent-Pay\nAI-powered autonomous payment routing system that intelligently optimizes payment transactions across multiple payment methods and providers.",
+    "votes": 4,
+    "github_stars": 0,
+    "community_score": 1.9,
+    "github_repo": "https://github.com/sarishanasane-beep/AGENT-PAY"
+  },
+  {
+    "id": "p071",
+    "rank": 71,
+    "project_name": "PRAMANA DFIR",
+    "description": "PRAMANA DFIR is an evidence-first digital forensics and cyber investigation platform. It helps investigators preserve and verify digital evidence, extract artifacts, correlate…",
+    "votes": 0,
+    "github_stars": 3,
+    "community_score": 1.8,
+    "github_repo": "https://github.com/codebyshambhavi/pramana-dfir"
+  },
+  {
+    "id": "p072",
+    "rank": 72,
+    "project_name": "Road Guard",
+    "description": "RoadGuard – AI-Powered Pothole Detection and Road Safety System\n\nRoadGuard is an AI-powered road safety application designed to detect potholes using computer vision and GPS…",
+    "votes": 0,
+    "github_stars": 3,
+    "community_score": 1.8,
+    "github_repo": "https://github.com/jiyajibin/BHARATH-HACKATHON-POTH-HOLE-DETECTOR"
+  },
+  {
+    "id": "p073",
+    "rank": 73,
+    "project_name": "ReproLoop",
+    "description": "ReproLoop aims to turn user-reported software problems into developer-verified fixes. A reporter describes a bug in plain language; the platform is designed to structure the…",
+    "votes": 0,
+    "github_stars": 3,
+    "community_score": 1.8,
+    "github_repo": "https://github.com/rakshit0907/reproloop"
+  },
+  {
+    "id": "p074",
+    "rank": 74,
+    "project_name": "vibe-check",
+    "description": "vibe-check is a Python CLI for reviewing AI-written code before it ships. It runs deterministic checks for common hardcoded secrets, risky code patterns and missing Python test…",
+    "votes": 1,
+    "github_stars": 2,
+    "community_score": 1.7,
+    "github_repo": "https://github.com/smsolutionsva-byte/vibe-check"
+  },
+  {
+    "id": "p075",
+    "rank": 75,
+    "project_name": "Nova",
+    "description": "NOVA is a maths notebook that reads your handwriting and teaches you step by step. Write on an endless grid page with a finger, stylus or mouse, just like paper. NOVA reads your…",
+    "votes": 1,
+    "github_stars": 2,
+    "community_score": 1.7,
+    "github_repo": "https://github.com/Mandar444/NOVA.git"
+  },
+  {
+    "id": "p076",
+    "rank": 76,
+    "project_name": "Apex Engineering",
+    "description": "ApexHarness: make a 27B model code like a Frontier model. Small models drown in repo bloat and retry loops; Apex wraps BharatCode’s stateless qwen-3.8-27b (store: false) in a…",
+    "votes": 1,
+    "github_stars": 2,
+    "community_score": 1.7,
+    "github_repo": "https://github.com/sudhanshuraj13/apex-engineering"
+  },
+  {
+    "id": "p077",
+    "rank": 77,
+    "project_name": "SupportFlow — Autonomous Multi-Agent Customer Operations Swarm",
+    "description": "SupportFlow is an autonomous multi-agent customer operations swarm with human-in-the-loop governance, built for the BharatCode Hackathon and powered by Switch AI.\n\nTraditional…",
+    "votes": 1,
+    "github_stars": 2,
+    "community_score": 1.7,
+    "github_repo": "https://github.com/bappaditya-paul/supportflow"
+  },
+  {
+    "id": "p078",
+    "rank": 78,
+    "project_name": "Atithyam – AI-Powered Hotel Review Intelligence & Competitive Benchmarking Platform",
+    "description": "Analyzes hotel reviews across multiple platforms using AI to identify guest concerns, compare competitors, and uncover local tourism issues, helping hotel owners improve services…",
+    "votes": 2,
+    "github_stars": 1,
+    "community_score": 1.5,
+    "github_repo": "https://github.com/Ashish-Rautela/Atithyam"
+  },
+  {
+    "id": "p079",
+    "rank": 79,
+    "project_name": "Counterexample Finder — LeetCode Copilot",
+    "description": "Counterexample Finder is a Chrome extension that opens a side panel right on LeetCode. Give it a problem and your (possibly buggy) solution and, without leaving the tab, it…",
+    "votes": 2,
+    "github_stars": 1,
+    "community_score": 1.5,
+    "github_repo": "https://github.com/SagenHansda19/Counterexample-Finder"
+  },
+  {
+    "id": "p080",
+    "rank": 80,
+    "project_name": "Daily Topper",
+    "description": "Daily Topper is a study planner built for the BharatCode Build League hackathon. Students enter their syllabus, confidence levels and exam dates, and it generates a day-by-day…",
+    "votes": 2,
+    "github_stars": 1,
+    "community_score": 1.5,
+    "github_repo": "https://github.com/mohit-1025/daily_topper"
+  },
+  {
+    "id": "p081",
+    "rank": 81,
+    "project_name": "KERN — AI Coding Agent",
+    "description": "KERN is an independent AI-powered desktop coding agent built with Electron, React, and TypeScript, designed to take developers from intention to verified code. It autonomously…",
+    "votes": 2,
+    "github_stars": 1,
+    "community_score": 1.5,
+    "github_repo": "https://github.com/NabilHamici/KERN-Ai-Agent"
+  },
+  {
+    "id": "p082",
+    "rank": 82,
+    "project_name": "PortIQ",
+    "description": "PortIQ is an AI-assisted logistics intelligence and decision-support platform designed to help analyse shipment risks, simulate operational disruptions, compare recovery…",
+    "votes": 2,
+    "github_stars": 1,
+    "community_score": 1.5,
+    "github_repo": "https://github.com/HOML-123/PortIQ"
+  },
+  {
+    "id": "p083",
+    "rank": 83,
+    "project_name": "QA auto-pilot",
+    "description": "QA engineers struggle to write, maintain and reuse Playwright scripts. QA Autopilot generates reusable, runnable Playwright scripts that heal themselves.\n\nGive it a URL and a…",
+    "votes": 3,
+    "github_stars": 0,
+    "community_score": 1.4,
+    "github_repo": "https://github.com/zaibshamsi/qa-automation"
+  },
+  {
+    "id": "p084",
+    "rank": 84,
+    "project_name": "Mumma's Kitchen",
+    "description": "Mumma’s Kitchen – AI Cooking Assistant is a smart cooking platform built using Next.js, Flutter, Supabase, and Prisma. It helps users discover recipes, get personalized cooking…",
+    "votes": 3,
+    "github_stars": 0,
+    "community_score": 1.4,
+    "github_repo": "https://github.com/adi-1080/mumma"
+  },
+  {
+    "id": "p085",
+    "rank": 85,
+    "project_name": "CampusConnect AI – Smart College Assistant & Campus Engagement Platform",
+    "description": "CampusConnectAI is an AI-powered campus engagement platform designed to help students discover college events, access academic resources, and receive instant assistance through an…",
+    "votes": 3,
+    "github_stars": 0,
+    "community_score": 1.4,
+    "github_repo": "https://github.com/tanujaukande0-png/CampusConnectAI"
+  },
+  {
+    "id": "p086",
+    "rank": 86,
+    "project_name": "RippleMap — One Change. Every Consequence.",
+    "description": "Ever wondered what happens when one important document changes, but the other documents connected to it remain the same?\n\nA single policy update can create hidden conflicts across…",
+    "votes": 3,
+    "github_stars": 0,
+    "community_score": 1.4,
+    "github_repo": "https://github.com/jayanthimg2006-creator/ripplemap"
+  },
+  {
+    "id": "p087",
+    "rank": 87,
+    "project_name": "EduSnap AI — AI Powered Attendance Management System",
+    "description": "EduSnap AI is a full-stack AI-powered attendance management system that uses face recognition to automatically identify students and mark attendance.\n\nThe project is fully…",
+    "votes": 0,
+    "github_stars": 2,
+    "community_score": 1.2,
+    "github_repo": "https://github.com/pankajdikale/edusnap-ai"
+  },
+  {
+    "id": "p088",
+    "rank": 88,
+    "project_name": "JARVIS-WEB",
+    "description": "⚡ JARVIS WEB — MORE THAN AN AI. A WHOLE FUTURE. 🤖🚀\n\n🔥 A futuristic AI command center inspired by Tony Stark’s JARVIS.\n🧠 Intelligent AI interactions at your fingertips.\n🎙️…",
+    "votes": 0,
+    "github_stars": 2,
+    "community_score": 1.2,
+    "github_repo": "https://github.com/anuveytq-sys/JARVIS-WEB"
+  },
+  {
+    "id": "p089",
+    "rank": 89,
+    "project_name": "CueLM — AI Note-Taking & Audio Sync Companion",
+    "description": "CueLM is an smart lecture workspace for Android that bridges local Markdown vaults with hardware audio recording.\nCore Workflows & Architecture: CueLM bridges a SvelteKit…",
+    "votes": 0,
+    "github_stars": 2,
+    "community_score": 1.2,
+    "github_repo": "https://github.com/tejasec/CueLM"
+  },
+  {
+    "id": "p090",
+    "rank": 90,
+    "project_name": "Atlas",
+    "description": "Atlas is a macOS app for chatting with AI models and running teams of AI agents on real project folders. Use local models (Ollama, MLX, llama.cpp, LM Studio) or cloud providers…",
+    "votes": 0,
+    "github_stars": 2,
+    "community_score": 1.2,
+    "github_repo": "https://github.com/ryuzrx/atlas-harness"
+  },
+  {
+    "id": "p091",
+    "rank": 91,
+    "project_name": "ATITHYAM",
+    "description": "Atithyam is an AI-powered hotel review intelligence and competitive benchmarking platform built for hotel owners and tourism boards. It aggregates hotel listings and guest reviews…",
+    "votes": 1,
+    "github_stars": 1,
+    "community_score": 1.1,
+    "github_repo": "https://github.com/Ashish-Rautela/Atithyam"
+  },
+  {
+    "id": "p092",
+    "rank": 92,
+    "project_name": "SemanticCache",
+    "description": "SemanticCache is a lightweight Python library that caches LLM responses by meaning instead of exact text, using embedding vectors and cosine similarity so paraphrased prompts hit…",
+    "votes": 1,
+    "github_stars": 1,
+    "community_score": 1.1,
+    "github_repo": "https://github.com/0x-bala/semanticcache"
+  },
+  {
+    "id": "p093",
+    "rank": 93,
+    "project_name": "Shakira / Commits Don't Lie",
+    "description": "Agent which connects to your Notion, Slack and Github to draft posts every time you commit and drafts an X post in your voice with every claim having a source linked in the…",
+    "votes": 1,
+    "github_stars": 1,
+    "community_score": 1.1,
+    "github_repo": "https://github.com/adot-7/commits-dont-lie"
+  },
+  {
+    "id": "p094",
+    "rank": 94,
+    "project_name": "Clause Ai",
+    "description": "The main goals of ClauseAI are:\n\n->simplify legal language for everyday users\n->highlight risks and unfair terms in contracts\n->compare agreements side by side\n->preserve chat…",
+    "votes": 1,
+    "github_stars": 1,
+    "community_score": 1.1,
+    "github_repo": "https://github.com/Karthik0956A/clauseai-2.0"
+  },
+  {
+    "id": "p095",
+    "rank": 95,
+    "project_name": "Turant",
+    "description": "Turant helps people in India in the hour after a scam. It shows “Call 1930” first, then reads the victim’s story and screenshots (UPI receipts, bank SMS, chats) with BharatCode’s…",
+    "votes": 1,
+    "github_stars": 1,
+    "community_score": 1.1,
+    "github_repo": "https://github.com/Sahvendra7/BharatCode"
+  },
+  {
+    "id": "p096",
+    "rank": 96,
+    "project_name": "BuildProof",
+    "description": "Modes\nDefend a repo: Scan a public GitHub repository for its stack, routes, entry points, integrations, documentation signals, and likely secrets. Get an architecture overview,…",
+    "votes": 1,
+    "github_stars": 1,
+    "community_score": 1.1,
+    "github_repo": "https://github.com/Aaditya-2407/BuildProof"
+  },
+  {
+    "id": "p097",
+    "rank": 97,
+    "project_name": "Kaksha",
+    "description": "Kaksha turns a topic or a document into a narrated, animated lecture: slides, a whiteboard the AI draws on step by step, and quizzes graded against a rubric.",
+    "votes": 1,
+    "github_stars": 1,
+    "community_score": 1.1,
+    "github_repo": "https://github.com/topspeed69/Kaksha"
+  },
+  {
+    "id": "p098",
+    "rank": 98,
+    "project_name": "Forge",
+    "description": "Forge is a deterministic project kernel for autonomous software engineering: an event-sourced task graph where every change by an LLM, agent, or human is proposed, validated, and…",
+    "votes": 1,
+    "github_stars": 1,
+    "community_score": 1.1,
+    "github_repo": "https://github.com/SanjayDavis/Forge"
+  },
+  {
+    "id": "p099",
+    "rank": 99,
+    "project_name": "H4u",
+    "description": "Public BharatCode Build League submission.",
+    "votes": 1,
+    "github_stars": 1,
+    "community_score": 1.1,
+    "github_repo": "https://github.com/devilTa1K/h4u"
+  },
+  {
+    "id": "p100",
+    "rank": 100,
+    "project_name": "Dockpath",
+    "description": "Dockpath is an AI-powered documentation learning assistant that converts documentation URLs into structured, step-by-step learning paths.\n- Problem: Developers often struggle to…",
+    "votes": 1,
+    "github_stars": 1,
+    "community_score": 1.1,
+    "github_repo": "https://github.com/Shrishti2812/Dockpath.git"
