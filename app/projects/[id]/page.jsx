@@ -40,6 +40,9 @@ export default async function ProjectPage({params}){
           <div className="tags">{repo.technologies.map(x=><span className="tag" key={x}>{x}</span>)}</div>
           <h3 style={{marginTop:18}}>Architecture</h3>
           <div className="tags">{repo.architecture.map(x=><span className="tag" key={x}>{x}</span>)}</div>
+          {repo.evidence?.architecture_fingerprint?.length?<><h3 style={{marginTop:18}}>Architecture fingerprint</h3>
+            <div className="list">{repo.evidence.architecture_fingerprint.map((x,i)=><div key={x.layer+'-'+i}><b>{x.layer}</b><small>{x.signal} · {x.evidence.join(' · ')}</small></div>)}</div>
+          </>:null}
           {repo.evidence?.architecture_hypothesis?.length?<><h3 style={{marginTop:18}}>Architecture hypothesis</h3>
             <div className="list">{repo.evidence.architecture_hypothesis.map((x,i)=><div key={x}><b>{i+1}. {x}</b><small>Detected repository layer</small></div>)}</div>
           </>:null}
