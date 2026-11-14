@@ -4,22 +4,31 @@ export async function POST(request){
   try{
     const body=await request.json();
     const github=String(body.github||'').trim();
+    const githubProfiles=Array.isArray(body.githubProfiles)?body.githubProfiles.map(String).map(x=>x.trim()).filter(Boolean):[];
+    const profiles=[...new Set([github,...githubProfiles].filter(Boolean))];
     const building=String(body.building||'').trim();
     const interests=Array.isArray(body.interests)?body.interests:[];
     let githubData=null;
 
-    if(github){
-      const match=github.match(/github\.com\/([^/]+)/i);
-      const login=(match?match[1]:github.replace(/^@/,'')).trim();
-      if(!login) return Response.json({error:'Enter a valid GitHub username or profile URL.'},{status:400});
+    if(profiles.length){
       const token=process.env.GITHUB_TOKEN;
       const headers={accept:'application/vnd.github+json',...(token?{authorization:'Bearer '+token}:{})};
-      const profileRes=await fetch('https://api.github.com/users/'+encodeURIComponent(login),{headers});
-      if(!profileRes.ok) return Response.json({error:'GitHub profile not found.'},{status:404});
-      const profile=await profileRes.json();
-      const reposRes=await fetch('https://api.github.com/users/'+encodeURIComponent(login)+'/repos?per_page=30&sort=updated',{headers});
-      const repos=reposRes.ok?await reposRes.json():[];
-      githubData={login:profile.login,name:profile.name,bio:profile.bio,repos:repos.map(r=>({name:r.name,description:r.description,language:r.language,topics:r.topics||[]}))};
+      const collected=[];
+      let firstProfile=null;
+      for(const value of profiles.slice(0,5)){
+        const match=value.match(/github\.com\/([^/]+)/i);
+        const login=(match?match[1]:value.replace(/^@/,'')).trim();
+        if(!login) continue;
+        const profileRes=await fetch('https://api.github.com/users/'+encodeURIComponent(login),{headers});
+        if(!profileRes.ok) continue;
+        const profile=await profileRes.json();
+        if(!firstProfile) firstProfile=profile;
+        const reposRes=await fetch('https://api.github.com/users/'+encodeURIComponent(login)+'/repos?per_page=30&sort=updated',{headers});
+        const repos=reposRes.ok?await reposRes.json():[];
+        collected.push(...repos.map(r=>({name:r.name,description:r.description,language:r.language,topics:r.topics||[]})));
+      }
+      if(!firstProfile && profiles.length) return Response.json({error:'No valid public GitHub profiles were found.'},{status:404});
+      githubData={login:firstProfile.login,name:firstProfile.name,bio:firstProfile.bio,repos:collected,profiles:profiles.slice(0,5)};
     }
 
     const userProfile=buildUserProfile({githubData,building,interests:interests.join(' ')});
