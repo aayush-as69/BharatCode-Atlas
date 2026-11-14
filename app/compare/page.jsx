@@ -77,6 +77,17 @@ export default async function Compare({searchParams}){
     </section>
 
     <section className="panel section">
+      <h2>Evidence behind the comparison</h2>
+      <p className="prose">Signals below come from public repository paths and README content. They are evidence indicators, not a full source-code audit.</p>
+      <div className="grid">{inspected.map(p=><div className="panel" key={p.id}>
+        <h3>{p.project_name}</h3>
+        {p.repo.ok ? <div className="list">
+          {Object.entries(p.repo.evidence?.architecture||{}).slice(0,8).map(([name,hits])=><div key={name}><b>{name}</b><small>{hits.join(' · ')}</small></div>)}
+        </div> : <p className="prose">{p.repo.error}</p>}
+      </div>)}</div>
+    </section>
+
+    <section className="panel section">
       <h2>How they differ</h2>
       <div className="list">{inspected.map(p=><div key={p.id}><b>{p.project_name}</b><small>{p.repo.ok?(p.repo.architecture.join(' · ')||'No architecture signals'):'Repository inspection unavailable'}</small></div>)}</div>
     </section>
