@@ -100,6 +100,17 @@ export default function Research(){
         {selected.project&&<Link className="chip" href={'/projects/'+selected.project.id}>Open project →</Link>}
       </div>
 
+      {form.repositoryIntelligence?.ok?<div className="panel" style={{marginTop:14}}>
+        <h3>Study checklist</h3>
+        <div className="list">
+          <div><b>1. Explain the architecture</b><small>Write the request/data flow in your own words.</small></div>
+          <div><b>2. Identify the strongest implementation choice</b><small>Record what you would keep if building a similar system.</small></div>
+          <div><b>3. Identify a tradeoff</b><small>Record one architectural decision you would question or change.</small></div>
+          <div><b>4. Extract an adaptable idea</b><small>Turn the observation into an idea for one of your own projects.</small></div>
+          <div><b>5. Mark it Applied</b><small>Move the research to Applied only after you actually use the lesson.</small></div>
+        </div>
+      </div>:null}
+
       <div className="tags">{statuses.map(x=><button key={x} className={'tag '+(form.status===x?'active':'')} onClick={()=>update('status',x)}>{x}</button>)}</div>
 
       {form.repositoryIntelligence?.ok?<section className="panel" style={{marginTop:14}}>
