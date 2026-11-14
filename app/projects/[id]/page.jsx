@@ -17,7 +17,7 @@ export default async function ProjectPage({params}){
     <div className="detailhead" style={{marginTop:16}}>
       <div><div className="eyebrow">Project #{p.rank}</div><h1>{p.project_name}</h1><p className="prose">{p.description}</p></div>
       <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
-        <StudyButton project={p}/>
+        <StudyButton project={p} repositoryIntelligence={repo}/>
         <Link className="button" href={'/compare?projects='+encodeURIComponent(p.id)}>Compare this →</Link>
         <a className="button" href={p.github_repo} target="_blank" rel="noreferrer">Open GitHub ↗</a>
       </div>
