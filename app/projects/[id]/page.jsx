@@ -39,6 +39,9 @@ export default async function ProjectPage({params}){
           <div className="tags">{repo.technologies.map(x=><span className="tag" key={x}>{x}</span>)}</div>
           <h3 style={{marginTop:18}}>Architecture</h3>
           <div className="tags">{repo.architecture.map(x=><span className="tag" key={x}>{x}</span>)}</div>
+          {repo.evidence?.architecture_hypothesis?.length?<><h3 style={{marginTop:18}}>Architecture hypothesis</h3>
+            <div className="list">{repo.evidence.architecture_hypothesis.map((x,i)=><div key={x}><b>{i+1}. {x}</b><small>Detected repository layer</small></div>)}</div>
+          </>:null}
         </> : <p className="prose">{repo?.error}</p>}
       </section>
 
@@ -53,6 +56,8 @@ export default async function ProjectPage({params}){
         </div>
         <h3 style={{marginTop:18}}>Detected manifests</h3>
         <div className="list">{repo.files.manifests.slice(0,10).map(x=><div key={x}><b>{x}</b><small>repository file</small></div>)}</div>
+        <h3 style={{marginTop:18}}>Why Atlas detected these</h3>
+        <div className="list">{Object.entries(repo.evidence?.technologies||{}).slice(0,10).map(([name,hits])=><div key={name}><b>{name}</b><small>{hits.join(' · ')}</small></div>)}</div>
         </>}
       </section>
     </div>
