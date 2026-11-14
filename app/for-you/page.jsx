@@ -76,7 +76,11 @@ export default function ForYou(){
           <label className="label">GitHub profile</label>
           <input className="input" value={github} onChange={e=>setGithub(e.target.value)} placeholder="username or github.com/username"/>
           <div style={{marginTop:10}}>
-            {repos.map((x,i)=><div className="chip" key={x}>{x}<button type="button" onClick={()=>setRepos(r=>r.filter((_,j)=>j!==i))} style={{marginLeft:8}}>×</button></div>)}
+            {repos.map((x,i)=><div className="chip" key={x}>{x}<button type="button" onClick={()=>{
+              const nextRepos=repos.filter((_,j)=>j!==i);
+              setRepos(nextRepos);
+              save({github,repos:nextRepos,building,selected,result});
+            }} style={{marginLeft:8}}>×</button></div>)}
             <button type="button" className="tag" onClick={addRepo}>+ Add another profile</button>
           </div>
           <label className="label" style={{marginTop:18}}>What are you building?</label>
