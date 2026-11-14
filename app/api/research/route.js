@@ -1,0 +1,30 @@
+import {NextResponse} from 'next/server';
+import {getProjects} from '@/lib/source';
+import {askBharatCode} from '@/lib/ai';
+
+export async function POST(req){
+  try{
+    const {question}=await req.json();
+    if(!question||typeof question!=='string'){
+      return NextResponse.json({error:'Question is required'},{status:400});
+    }
+
+    const words=question.toLowerCase().split(/\s+/).filter(x=>x.length>4);
+    const projects=(await getProjects())
+      .filter(p=>words.some(w=>(p.project_name+' '+p.description).toLowerCase().includes(w)))
+      .slice(0,12);
+
+    const context=projects.map(p=>`#${p.rank} ${p.project_name}\n${p.description}\nVotes: ${p.votes}; GitHub stars: ${p.github_stars}; Community score: ${p.community_score}\nRepo: ${p.github_repo}`).join('\n\n');
+    const prompt=`You are BharatCode Atlas Researcher. Answer only from the supplied project evidence. If the evidence is insufficient, say so. Question: ${question}\n\nProject evidence:\n${context}`;
+    const result=await askBharatCode(prompt);
+
+    return NextResponse.json({
+      question,
+      projects,
+      answer:result.ok?result.text:null,
+      error:result.ok?null:result.error
+    });
+  }catch{
+    return NextResponse.json({error:'Invalid research request'},{status:400});
+  }
+}
