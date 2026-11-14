@@ -14,7 +14,7 @@ export default function Nav(){
         <Link href="/hidden-gems">Hidden Gems</Link>
         <Link href="/compare">Compare</Link>
         <Link href="/research">My Research</Link>
-        <Link href="/for-aayush">For Aayush</Link>\n        <Link href="/intelligence">Repository Intelligence</Link>
+        <Link href="/for-aayush">For Aayush</Link>\n        <Link href="/intelligence">Repository Intelligence</Link>\n        <Link href="/rankings">Research Rankings</Link>
         <Link href="/ai-researcher">AI Researcher</Link>
       </nav>
       <div style={{marginTop:28,padding:'12px',borderTop:'1px solid var(--line)',color:'var(--muted)',fontSize:10,lineHeight:1.5}}>
