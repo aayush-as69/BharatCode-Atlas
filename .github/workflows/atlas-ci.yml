@@ -19,8 +19,11 @@ jobs:
           node-version: 20
           cache: npm
 
+      - name: Require npm lockfile
+        run: test -f package-lock.json
+
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Verify JavaScript-only repository
         run: npm run verify:js
