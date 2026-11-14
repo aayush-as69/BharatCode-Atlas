@@ -84,7 +84,7 @@ export default function Research(){
       <div className="list" style={{marginTop:12}}>
         {filtered.map(x=><button key={x.id} className="panel" onClick={()=>openItem(x)} style={{textAlign:'left',cursor:'pointer'}}>
           <b>{x.project?.project_name||'Untitled project'}</b>
-          <small>{x.status+' · '+x.collection+' · '+new Date(x.updatedAt||x.createdAt||Date.now()).toLocaleDateString()}</small>
+          <small>{x.status+' · '+x.collection+' · '+(x.repositoryIntelligence?.ok?'Evidence saved':'No evidence snapshot')+' · '+new Date(x.updatedAt||x.createdAt||Date.now()).toLocaleDateString()}</small>
         </button>)}
       </div>
       {!filtered.length&&<p className="prose" style={{marginTop:14}}>Nothing saved yet. Open a project and choose “Study this”.</p>}
