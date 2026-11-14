@@ -6,8 +6,9 @@ import {inspectRepository} from '@/lib/github';
 export default async function Intelligence(){
   const projects=await getProjects();
   const requested=['Next.js','React','Python','FastAPI','Flask','Express','MongoDB','PostgreSQL','Supabase','Tailwind CSS','LangChain','LlamaIndex','OpenAI','Gemini','Vector DB','Docker','MCP'];
+  const sample=projects.filter((p,i)=>i<24||i%12===0).slice(0,48);
   const rows=[];
-  for(const p of projects){
+  for(const p of sample){
     try{
       const r=await inspectRepository(p.github_repo);
       if(r.ok) rows.push({...p,repo:r});
@@ -20,10 +21,10 @@ export default async function Intelligence(){
   return <div className="shell"><Nav/><main className="main">
     <div className="eyebrow">Repository intelligence</div>
     <h1 className="title">What are these projects actually built with?</h1>
-    <p className="sub">Atlas inspects public GitHub metadata, file paths and README content. Signals are evidence-based heuristics, not claims that every detected component is actively used in production.</p>
+    <p className="sub">Atlas samples a bounded set of public GitHub repositories for cross-corpus architecture signals. Individual project pages and Compare inspect selected repositories on demand. Signals are evidence-based heuristics, not claims that every detected component is actively used in production.</p>
 
     <div className="stats">
-      <div className="stat"><b>{rows.length}</b><span>Repositories inspected</span></div>
+      <div className="stat"><b>{rows.length}</b><span>Repositories sampled</span></div>
       <div className="stat"><b>{rows.filter(x=>x.repo.files.readme_found).length}</b><span>READMEs found</span></div>
       <div className="stat"><b>{rows.reduce((n,x)=>n+x.repo.files.count,0).toLocaleString()}</b><span>Tracked files sampled</span></div>
     </div>
