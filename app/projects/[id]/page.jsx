@@ -62,7 +62,7 @@ export default async function ProjectPage({params}){
         <h3 style={{marginTop:18}}>Detected manifests</h3>
         <div className="list">{repo.files.manifests.slice(0,10).map(x=><div key={x}><b>{x}</b><small>repository file</small></div>)}</div>
         {repo.evidence?.source_files?.length?<><h3 style={{marginTop:18}}>Inspected repository files</h3>
-        <div className="list">{repo.evidence.source_files.map(x=><div key={x.path}><b>{x.path}</b><small>{x.role+' · '+x.size+' bytes'}</small><details style={{marginTop:6}}><summary style={{fontSize:12,color:'var(--muted)',cursor:'pointer'}}>Show preview</summary><pre style={{fontSize:12,whiteSpace:'pre-wrap',maxHeight:180,overflow:'auto',marginTop:6}}>{x.preview}</pre></details></div>)}</div>
+        <div className="list">{repo.evidence.source_files.map(x=><div key={x.path}><b>{x.path}</b><small>{x.role+' · '+x.size+' bytes'}</small>{x.preview&&<details style={{marginTop:6}}><summary style={{fontSize:12,color:'var(--muted)',cursor:'pointer'}}>Show preview (redacted)</summary><pre style={{fontSize:12,whiteSpace:'pre-wrap',maxHeight:180,overflow:'auto',marginTop:6}}>{x.preview}</pre></details>}</div>)}</div>
         </>:null}
         <h3 style={{marginTop:18}}>Why Atlas detected these</h3>
         <div className="list">{Object.entries(repo.evidence?.technologies||{}).slice(0,10).map(([name,hits])=><div key={name}><b>{name}</b><small>{hits.join(' · ')}</small></div>)}</div>
