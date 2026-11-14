@@ -1,0 +1,2 @@
+import Link from 'next/link';
+export default function Nav(){return <aside className="side"><div className="brand"><div className="mark">A</div><div><b>BharatCode Atlas</b><span>Build League intelligence</span></div></div><nav className="nav"><Link href="/">Overview</Link><Link href="/explore">Explore 294</Link><Link href="/hidden-gems">Hidden Gems</Link><Link href="/compare">Compare</Link><Link href="/research">My Research</Link><Link href="/ai-researcher">AI Researcher</Link></nav></aside>}
