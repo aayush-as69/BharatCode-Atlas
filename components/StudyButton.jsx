@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 const KEY='bharatcode-atlas-research-v2';
 
-export default function StudyButton({project}){
+export default function StudyButton({project,repositoryIntelligence=null}){
   const [saved,setSaved]=useState(false);
 
   function study(){
@@ -16,6 +16,7 @@ export default function StudyButton({project}){
         const next=[{
           id:Date.now(),
           project,
+          repositoryIntelligence,
           status:'To Study',
           collection:'General',
           whySaved:'',
