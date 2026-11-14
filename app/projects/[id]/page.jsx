@@ -35,6 +35,7 @@ export default async function ProjectPage({params}){
         <div className="sectionhead"><div><h2>Repository intelligence</h2><p>Current public GitHub evidence.</p></div></div>
         {repo?.ok ? <>
           <div className="metrics"><b>{repo.repository.stars}<span> current stars</span></b><b>{repo.repository.forks}<span> forks</span></b><b>{repo.repository.open_issues}<span> open issues</span></b></div>
+          <p style={{fontSize:10,color:'var(--muted)',marginTop:10}}>Live GitHub inspection · repository updated {repo.repository.updated_at?new Date(repo.repository.updated_at).toLocaleDateString():'unknown'}</p>
           <h3 style={{marginTop:18}}>Technologies</h3>
           <div className="tags">{repo.technologies.map(x=><span className="tag" key={x}>{x}</span>)}</div>
           <h3 style={{marginTop:18}}>Architecture</h3>
