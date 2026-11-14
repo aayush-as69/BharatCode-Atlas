@@ -17,26 +17,45 @@ export default async function ProjectPage({params}){
       <div><div className="eyebrow">Project #{p.rank}</div><h1>{p.project_name}</h1><p className="prose">{p.description}</p></div>
       <a className="button" href={p.github_repo} target="_blank" rel="noreferrer">Open GitHub ↗</a>
     </div>
+
     <div className="kpis">
       <div className="kpi"><b>{p.votes}</b><span>Votes</span></div>
-      <div className="kpi"><b>{p.github_stars}</b><span>GitHub stars</span></div>
+      <div className="kpi"><b>{p.github_stars}</b><span>GitHub stars at source capture</span></div>
       <div className="kpi"><b>{p.community_score.toFixed(1)}</b><span>Community score</span></div>
-      {repo?.ok?<div className="kpi"><b>{repo.repository.language||'—'}</b><span>GitHub primary language</span></div>:<div className="kpi"><b>—</b><span>Repository data</span></div>}
+      {repo?.ok?<div className="kpi"><b>{repo.repository.language||'—'}</b><span>GitHub primary language</span></div>:null}
     </div>
+
     <div className="two section">
       <section className="panel">
-        <div className="sectionhead"><div><h2>Repository intelligence</h2><p>Evidence-backed signals from GitHub metadata, file paths and README.</p></div></div>
+        <div className="sectionhead"><div><h2>Repository intelligence</h2><p>Current public GitHub evidence.</p></div></div>
         {repo?.ok ? <>
-          <div className="metrics"><b>{repo.repository.stars}<span> stars now</span></b><b>{repo.repository.forks}<span> forks</span></b><b>{repo.files.count}<span> tracked files</span></b></div>
-          <div className="tags" style={{marginTop:12}}>{repo.technologies.map(x=><span className="tag" key={x}>{x}</span>)}</div>
-          <p className="prose" style={{marginTop:14}}>Evidence: {repo.files.readme_found?'README + repository file paths':'repository file paths'}.</p>
-        </> : <p className="prose">{repo?.error||'Repository inspection unavailable.'}</p>}
+          <div className="metrics"><b>{repo.repository.stars}<span> current stars</span></b><b>{repo.repository.forks}<span> forks</span></b><b>{repo.repository.open_issues}<span> open issues</span></b></div>
+          <h3 style={{marginTop:18}}>Technologies</h3>
+          <div className="tags">{repo.technologies.map(x=><span className="tag" key={x}>{x}</span>)}</div>
+          <h3 style={{marginTop:18}}>Architecture</h3>
+          <div className="tags">{repo.architecture.map(x=><span className="tag" key={x}>{x}</span>)}</div>
+        </> : <p className="prose">{repo?.error}</p>}
       </section>
+
       <section className="panel">
-        <h2>Architecture clues</h2>
-        <p className="prose">Atlas distinguishes published project metadata from repository evidence. Technology labels shown here are detected from repository evidence; they are not inferred solely from the project description.</p>
-        {repo?.ok&&repo.files.manifests.length?<div className="list">{repo.files.manifests.slice(0,8).map(x=><div key={x}><b>{x}</b><small>manifest detected</small></div>)}</div>:null}
+        <h2>Evidence</h2>
+        <p className="prose">Atlas generated these signals from public repository file paths and README content. They are indicators for research, not a full source-code audit.</p>
+        {repo?.ok&&<><div className="list">
+          <div><b>Repository</b><small>{repo.repository.full_name}</small></div>
+          <div><b>Default branch</b><small>{repo.repository.default_branch}</small></div>
+          <div><b>README</b><small>{repo.files.readme_found?'Found':'Not found'}</small></div>
+          <div><b>Files sampled</b><small>{repo.files.count}</small></div>
+        </div>
+        <h3 style={{marginTop:18}}>Detected manifests</h3>
+        <div className="list">{repo.files.manifests.slice(0,10).map(x=><div key={x}><b>{x}</b><small>repository file</small></div>)}</div>
+        </>}
       </section>
     </div>
+
+    <section className="panel section">
+      <h2>Source description</h2>
+      <p className="prose">{p.description}</p>
+      <a href={p.github_repo} target="_blank" rel="noreferrer" style={{color:'var(--accent)'}}>Inspect the source repository ↗</a>
+    </section>
   </main></div>;
 }
