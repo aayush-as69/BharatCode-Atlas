@@ -169,6 +169,10 @@ The AI Researcher first retrieves matching Atlas project records and then uses t
 
 The interface exposes retrieved project evidence alongside the answer so users can inspect the underlying projects.
 
+## Dependency security
+
+Atlas pins its direct production dependency versions in `package.json`. Next.js is kept on the patched 15.5.x maintenance line, and React is pinned to a patched 19.2.x release. The project uses npm; after dependency changes, generate and commit `package-lock.json` with `npm install` in a networked npm environment so CI can use reproducible installs.
+
 ## CI
 
 GitHub Actions runs:
