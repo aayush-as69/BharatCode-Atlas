@@ -29,5 +29,5 @@ export default function CompareStudyButton({projects}){
       }
     }catch{}
   }
-  return <Link className="button" href="/research" onClick={save}>Study this comparison →</Link>;
+  return <Link className="button primary" href="/research" onClick={save}>Study this comparison →</Link>;
 }

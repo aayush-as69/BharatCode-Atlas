@@ -41,6 +41,6 @@ export default function StudyButton({project,repositoryIntelligence=null}){
   }
 
   return saved
-    ? <Link className="button" href="/research">Open Research Workspace →</Link>
-    : <button className="button" type="button" onClick={study}>Study this</button>;
+    ? <Link className="button primary" href="/research">Open Research Workspace →</Link>
+    : <button className="button primary" type="button" onClick={study}>Study this</button>;
 }

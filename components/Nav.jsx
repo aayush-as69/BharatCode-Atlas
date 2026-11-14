@@ -1,27 +1,64 @@
+'use client';
+
 import Link from 'next/link';
+import {usePathname} from 'next/navigation';
+
+function Icon({children}){
+  return (
+    <svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor"
+      strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      {children}
+    </svg>
+  );
+}
+
+const icons={
+  overview:<Icon><circle cx="8" cy="8" r="6.4"/><path d="M10.6 5.4 9.1 9.1 5.4 10.6 6.9 6.9z"/></Icon>,
+  explore:<Icon><circle cx="7.2" cy="7.2" r="4.6"/><path d="M13.4 13.4 10.4 10.4"/></Icon>,
+  categories:<Icon><path d="M8 1.8 14 5 8 8.2 2 5z"/><path d="M2.6 8.2 8 11l5.4-2.8"/><path d="M2.6 11.2 8 14l5.4-2.8"/></Icon>,
+  gems:<Icon><path d="M8 2l1.4 4.1L13.5 7.5 9.4 8.9 8 13 6.6 8.9 2.5 7.5 6.6 6.1z"/></Icon>,
+  compare:<Icon><rect x="2" y="2.5" width="5" height="11" rx="1.2"/><rect x="9" y="2.5" width="5" height="11" rx="1.2"/></Icon>,
+  foryou:<Icon><circle cx="8" cy="5.4" r="2.9"/><path d="M2.8 13.6c.7-2.6 2.7-4 5.2-4s4.5 1.4 5.2 4"/></Icon>,
+  research:<Icon><rect x="2.8" y="1.8" width="10.4" height="12.4" rx="1.6"/><path d="M5.8 1.8v12.4"/></Icon>,
+  intelligence:<Icon><circle cx="4.5" cy="3.6" r="1.7"/><circle cx="4.5" cy="12.4" r="1.7"/><circle cx="11.5" cy="5.4" r="1.7"/><path d="M4.5 5.3v5.4"/><path d="M11.5 7.1c0 2.3-2.9 2.6-5.2 3.3"/></Icon>,
+  rankings:<Icon><path d="M3 13.5V9.5"/><path d="M8 13.5V4"/><path d="M13 13.5V7"/></Icon>,
+  ai:<Icon><path d="M9.2 2.4l1 2.7 2.7 1-2.7 1-1 2.7-1-2.7-2.7-1 2.7-1z"/><path d="M4.2 10.4l.6 1.6 1.6.6-1.6.6-.6 1.6-.6-1.6-1.6-.6 1.6-.6z"/></Icon>,
+};
+
+const links=[
+  ['/', 'Overview', icons.overview],
+  ['/explore', 'Explore', icons.explore],
+  ['/categories', 'Categories', icons.categories],
+  ['/hidden-gems', 'Hidden Gems', icons.gems],
+  ['/compare', 'Compare', icons.compare],
+  ['/for-you', 'For You', icons.foryou],
+  ['/research', 'My Research', icons.research],
+  ['/intelligence', 'Intelligence', icons.intelligence],
+  ['/rankings', 'Rankings', icons.rankings],
+  ['/ai-researcher', 'AI Researcher', icons.ai],
+];
 
 export default function Nav(){
+  const pathname=usePathname()||'/';
   return (
     <aside className="side">
-      <div className="brand">
+      <Link href="/" className="brand">
         <div className="mark">A</div>
-        <div><b>BharatCode Atlas</b><span>Build League intelligence</span></div>
-      </div>
+        <div className="brandtext"><b>BharatCode Atlas</b><span>Build League intelligence</span></div>
+      </Link>
       <nav className="nav" aria-label="Atlas navigation">
-        <Link href="/">Overview</Link>
-        <Link href="/explore">Explore 294</Link>
-        <Link href="/categories">Categories</Link>
-        <Link href="/hidden-gems">Hidden Gems</Link>
-        <Link href="/compare">Compare</Link>
-        <Link href="/research">My Research</Link>
-        <Link href="/for-you">For You</Link>
-        <Link href="/intelligence">Repository Intelligence</Link>
-        <Link href="/rankings">Research Rankings</Link>
-        <Link href="/ai-researcher">AI Researcher</Link>
+        {links.map(([href,label,icon])=>{
+          const active=href==='/'?pathname==='/':pathname.startsWith(href);
+          return (
+            <Link key={href} href={href} className={'navlink'+(active?' active':'')} aria-current={active?'page':undefined}>
+              {icon}<span>{label}</span>
+            </Link>
+          );
+        })}
       </nav>
-      <div style={{marginTop:28,padding:'12px',borderTop:'1px solid var(--line)',color:'var(--muted)',fontSize:12,lineHeight:1.5}}>
-        <b style={{color:'var(--text)'}}>Source</b><br/>
-        294 published Build League projects. Atlas scores are derived research signals.
+      <div className="sidefoot">
+        <b>294 published projects</b>
+        Atlas scores are derived research signals, not official verdicts.
       </div>
     </aside>
   );

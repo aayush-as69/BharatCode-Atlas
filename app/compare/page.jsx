@@ -44,12 +44,12 @@ export default async function Compare({searchParams}){
         {inspected.length>=2&&<CompareStudyButton projects={inspected}/>}
       </div>
       <div style={{overflowX:'auto'}}>
-        <table style={{width:'100%',borderCollapse:'collapse',fontSize:12}}>
-          <thead><tr><th style={{textAlign:'left',padding:12}}>Source signal</th>{inspected.map(p=><th key={p.id} style={{textAlign:'left',padding:12,minWidth:190}}><Link href={'/projects/'+p.id}>{p.project_name}</Link><div style={{fontSize:12,color:'var(--muted)',marginTop:4}}>#{p.rank}</div></th>)}</tr></thead>
+        <table className="table">
+          <thead><tr><th>Source signal</th>{inspected.map(p=><th key={p.id}><Link href={'/projects/'+p.id}>{p.project_name}</Link><div style={{fontSize:12,color:'var(--muted)',marginTop:4}}>#{p.rank}</div></th>)}</tr></thead>
           <tbody>
             {[
               ['Votes',p=>p.votes],['GitHub stars at source capture',p=>p.github_stars],['Community score',p=>p.community_score],['Atlas relevance',relevance],['Hidden gem',hiddenGem]
-            ].map(([name,fn])=><tr key={name}><td style={{padding:12,color:'var(--muted)',borderTop:'1px solid var(--line)'}}>{name}</td>{inspected.map(p=><td key={p.id} style={{padding:12,borderTop:'1px solid var(--line)'}}>{fn(p)}</td>)}</tr>)}
+            ].map(([name,fn])=><tr key={name}><td>{name}</td>{inspected.map(p=><td key={p.id}>{fn(p)}</td>)}</tr>)}
           </tbody>
         </table>
       </div>
@@ -58,9 +58,9 @@ export default async function Compare({searchParams}){
     <section className="panel section">
       <div className="sectionhead"><div><h2>Architecture</h2><p>Repository-level structural signals. “—” means Atlas could not detect the signal.</p></div></div>
       <div style={{overflowX:'auto'}}>
-        <table style={{width:'100%',borderCollapse:'collapse',fontSize:12}}>
-          <thead><tr><th style={{textAlign:'left',padding:12}}>Architecture layer</th>{inspected.map(p=><th key={p.id} style={{textAlign:'left',padding:12,minWidth:170}}>{p.project_name}</th>)}</tr></thead>
-          <tbody>{architectureKeys.map(key=><tr key={key}><td style={{padding:12,color:'var(--muted)',borderTop:'1px solid var(--line)'}}>{key}</td>{inspected.map(p=><td key={p.id} style={{padding:12,borderTop:'1px solid var(--line)'}}>{p.repo.ok&&p.repo.architecture.includes(key)?'✓':'—'}</td>)}</tr>)}</tbody>
+        <table className="table">
+          <thead><tr><th>Architecture layer</th>{inspected.map(p=><th key={p.id}>{p.project_name}</th>)}</tr></thead>
+          <tbody>{architectureKeys.map(key=><tr key={key}><td>{key}</td>{inspected.map(p=><td key={p.id}>{p.repo.ok&&p.repo.architecture.includes(key)?<span className="check">✓</span>:<span className="miss">—</span>}</td>)}</tr>)}</tbody>
         </table>
       </div>
     </section>
@@ -68,9 +68,9 @@ export default async function Compare({searchParams}){
     <section className="panel section">
       <div className="sectionhead"><div><h2>Technology stack</h2><p>Detected from repository file paths and README evidence.</p></div></div>
       <div style={{overflowX:'auto'}}>
-        <table style={{width:'100%',borderCollapse:'collapse',fontSize:12}}>
-          <thead><tr><th style={{textAlign:'left',padding:12}}>Technology</th>{inspected.map(p=><th key={p.id} style={{textAlign:'left',padding:12,minWidth:170}}>{p.project_name}</th>)}</tr></thead>
-          <tbody>{technologyKeys.map(key=><tr key={key}><td style={{padding:12,color:'var(--muted)',borderTop:'1px solid var(--line)'}}>{key}</td>{inspected.map(p=><td key={p.id} style={{padding:12,borderTop:'1px solid var(--line)'}}>{p.repo.ok&&p.repo.technologies.includes(key)?'✓':'—'}</td>)}</tr>)}</tbody>
+        <table className="table">
+          <thead><tr><th>Technology</th>{inspected.map(p=><th key={p.id}>{p.project_name}</th>)}</tr></thead>
+          <tbody>{technologyKeys.map(key=><tr key={key}><td>{key}</td>{inspected.map(p=><td key={p.id}>{p.repo.ok&&p.repo.technologies.includes(key)?<span className="check">✓</span>:<span className="miss">—</span>}</td>)}</tr>)}</tbody>
         </table>
       </div>
     </section>

@@ -15,6 +15,11 @@ export default async function Home(){
     <h1 className="title">Explore what builders built.</h1>
     <p className="sub">BharatCode Atlas turns the 294-project Build League dataset into a research workspace for discovering ideas, technical signals and projects worth investigating.</p>
 
+    <div className="heroactions">
+      <Link className="button primary" href="/explore">Explore 294 projects</Link>
+      <Link className="button" href="/ai-researcher">Ask the AI researcher</Link>
+    </div>
+
     <div className="stats">
       <div className="stat"><b>{projects.length}</b><span>Projects</span></div>
       <div className="stat"><b>{counts.agents}</b><span>Agent signals</span></div>
