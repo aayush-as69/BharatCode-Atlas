@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import {usePathname} from 'next/navigation';
+import {useState} from 'react';
 
 function Icon({children}){
   return (
@@ -40,22 +41,35 @@ const links=[
 
 export default function Nav(){
   const pathname=usePathname()||'/';
+  const [open,setOpen]=useState(false);
+  const isActive=href=>href==='/'?pathname==='/':pathname.startsWith(href);
+
   return (
     <aside className="side">
-      <Link href="/" className="brand">
+      <Link href="/" className="brand" onClick={()=>setOpen(false)}>
         <div className="mark">A</div>
         <div className="brandtext"><b>BharatCode Atlas</b><span>Build League intelligence</span></div>
       </Link>
-      <nav className="nav" aria-label="Atlas navigation">
+
+      <button type="button" className="menubtn" aria-expanded={open} aria-label="Toggle navigation"
+        onClick={()=>setOpen(o=>!o)}>
+        <Icon>{open?<path d="M3.5 3.5l9 9M12.5 3.5l-9 9"/>:<path d="M2.5 5h11M2.5 8h11M2.5 11h11"/>}</Icon>
+      </button>
+
+      {open&&<button type="button" className="backdrop" aria-label="Close navigation" onClick={()=>setOpen(false)}/>}
+
+      <nav className={'nav'+(open?' open':'')} aria-label="Atlas navigation">
         {links.map(([href,label,icon])=>{
-          const active=href==='/'?pathname==='/':pathname.startsWith(href);
+          const active=isActive(href);
           return (
-            <Link key={href} href={href} className={'navlink'+(active?' active':'')} aria-current={active?'page':undefined}>
+            <Link key={href} href={href} className={'navlink'+(active?' active':'')}
+              aria-current={active?'page':undefined} onClick={()=>setOpen(false)}>
               {icon}<span>{label}</span>
             </Link>
           );
         })}
       </nav>
+
       <div className="sidefoot">
         <b>294 published projects</b>
         Atlas scores are derived research signals, not official verdicts.
