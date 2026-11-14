@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Nav from '@/components/Nav';
 import {getProjects,classify,relevance,hiddenGem} from '@/lib/source';
+import {inspectRepository} from '@/lib/github';
 
 export default async function Compare({searchParams}){
   const sp=await searchParams;
@@ -8,11 +9,17 @@ export default async function Compare({searchParams}){
   const all=await getProjects();
   const picks=ids.length?ids.map(id=>all.find(p=>p.id===id)).filter(Boolean):all.slice(0,3);
   const picker=all.slice(0,40);
+  const inspected=await Promise.all(picks.map(async p=>{
+    try{return {...p,repo:await inspectRepository(p.github_repo)};}catch{return {...p,repo:{ok:false,error:'Repository inspection unavailable'}};}
+  }));
+
+  const architectureKeys=['Frontend','Backend / API','Database','AI / LLM','RAG / Retrieval','Agents / Orchestration','Authentication','Deployment','Testing','Observability'];
+  const technologyKeys=['Next.js','React','Python','FastAPI','Flask','Express','MongoDB','PostgreSQL','Supabase','Tailwind CSS','LangChain','LlamaIndex','OpenAI','Gemini','Vector DB','Docker','MCP'];
 
   return <div className="shell"><Nav/><main className="main">
-    <div className="eyebrow">Side-by-side research</div>
+    <div className="eyebrow">Architecture research</div>
     <h1 className="title">Compare projects.</h1>
-    <p className="sub">Select up to four projects. Comparison uses source metrics plus Atlas-derived signals.</p>
+    <p className="sub">Put 2–4 repositories side-by-side and compare their public source signals, architecture fingerprints, technologies, and engineering structure.</p>
 
     <form className="panel section" method="get">
       <label style={{fontSize:11,color:'var(--muted)'}}>Project IDs — comma separated</label>
@@ -25,18 +32,42 @@ export default async function Compare({searchParams}){
       </div>
     </form>
 
-    <div className="panel section">
+    <section className="panel section">
       <div style={{overflowX:'auto'}}>
         <table style={{width:'100%',borderCollapse:'collapse',fontSize:12}}>
-          <thead><tr><th style={{textAlign:'left',padding:12}}>Signal</th>{picks.map(p=><th key={p.id} style={{textAlign:'left',padding:12,minWidth:180}}><Link href={'/projects/'+p.id}>{p.project_name}</Link><div style={{fontSize:10,color:'var(--muted)',marginTop:4}}>#{p.rank}</div></th>)}</tr></thead>
+          <thead><tr><th style={{textAlign:'left',padding:12}}>Source signal</th>{inspected.map(p=><th key={p.id} style={{textAlign:'left',padding:12,minWidth:190}}><Link href={'/projects/'+p.id}>{p.project_name}</Link><div style={{fontSize:10,color:'var(--muted)',marginTop:4}}>#{p.rank}</div></th>)}</tr></thead>
           <tbody>
             {[
-              ['Votes',p=>p.votes],['GitHub stars',p=>p.github_stars],['Community score',p=>p.community_score],['Atlas relevance',relevance],['Hidden gem',hiddenGem]
-            ].map(([name,fn])=><tr key={name}><td style={{padding:12,color:'var(--muted)',borderTop:'1px solid var(--line)'}}>{name}</td>{picks.map(p=><td key={p.id} style={{padding:12,borderTop:'1px solid var(--line)'}}>{fn(p)}</td>)}</tr>)}
-            <tr><td style={{padding:12,color:'var(--muted)',borderTop:'1px solid var(--line)'}}>Signals</td>{picks.map(p=><td key={p.id} style={{padding:12,borderTop:'1px solid var(--line)'}}><div className="tags">{Object.entries(classify(p)).filter(([,v])=>v).map(([k])=><span className="tag" key={k}>{k}</span>)}</div></td>)}</tr>
+              ['Votes',p=>p.votes],['GitHub stars at source capture',p=>p.github_stars],['Community score',p=>p.community_score],['Atlas relevance',relevance],['Hidden gem',hiddenGem]
+            ].map(([name,fn])=><tr key={name}><td style={{padding:12,color:'var(--muted)',borderTop:'1px solid var(--line)'}}>{name}</td>{inspected.map(p=><td key={p.id} style={{padding:12,borderTop:'1px solid var(--line)'}}>{fn(p)}</td>)}</tr>)}
           </tbody>
         </table>
       </div>
-    </div>
+    </section>
+
+    <section className="panel section">
+      <div className="sectionhead"><div><h2>Architecture</h2><p>Repository-level structural signals. “—” means Atlas could not detect the signal.</p></div></div>
+      <div style={{overflowX:'auto'}}>
+        <table style={{width:'100%',borderCollapse:'collapse',fontSize:12}}>
+          <thead><tr><th style={{textAlign:'left',padding:12}}>Architecture layer</th>{inspected.map(p=><th key={p.id} style={{textAlign:'left',padding:12,minWidth:170}}>{p.project_name}</th>)}</tr></thead>
+          <tbody>{architectureKeys.map(key=><tr key={key}><td style={{padding:12,color:'var(--muted)',borderTop:'1px solid var(--line)'}}>{key}</td>{inspected.map(p=><td key={p.id} style={{padding:12,borderTop:'1px solid var(--line)'}}>{p.repo.ok&&p.repo.architecture.includes(key)?'✓':'—'}</td>)}</tr>)}</tbody>
+        </table>
+      </div>
+    </section>
+
+    <section className="panel section">
+      <div className="sectionhead"><div><h2>Technology stack</h2><p>Detected from repository file paths and README evidence.</p></div></div>
+      <div style={{overflowX:'auto'}}>
+        <table style={{width:'100%',borderCollapse:'collapse',fontSize:12}}>
+          <thead><tr><th style={{textAlign:'left',padding:12}}>Technology</th>{inspected.map(p=><th key={p.id} style={{textAlign:'left',padding:12,minWidth:170}}>{p.project_name}</th>)}</tr></thead>
+          <tbody>{technologyKeys.map(key=><tr key={key}><td style={{padding:12,color:'var(--muted)',borderTop:'1px solid var(--line)'}}>{key}</td>{inspected.map(p=><td key={p.id} style={{padding:12,borderTop:'1px solid var(--line)'}}>{p.repo.ok&&p.repo.technologies.includes(key)?'✓':'—'}</td>)}</tr>)}</tbody>
+        </table>
+      </div>
+    </section>
+
+    <section className="panel section">
+      <h2>How they differ</h2>
+      <div className="list">{inspected.map(p=><div key={p.id}><b>{p.project_name}</b><small>{p.repo.ok?(p.repo.architecture.join(' · ')||'No architecture signals'):'Repository inspection unavailable'}</small></div>)}</div>
+    </section>
   </main></div>;
 }
