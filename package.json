@@ -6,10 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "test": "node --test",
     "verify:js": "node scripts/verify-js.mjs",
     "data:sync": "node scripts/sync-projects.mjs",
     "audit:prod": "npm audit --omit=dev --audit-level=high"
   },
+  "type": "module",
   "dependencies": {
     "next": "15.5.29",
     "react": "19.2.9",

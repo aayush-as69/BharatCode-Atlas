@@ -94,8 +94,8 @@ export default function ForYou(){
           <button className="button" style={{marginTop:20}} onClick={run} disabled={loading}>{loading?'Building your profile…':'Refresh recommendations →'}</button>
           <button type="button" className="tag" style={{marginTop:10,display:'block'}} onClick={clear}>Clear profile</button>
           <div className="panel" style={{marginTop:14,padding:12}}>
-            <b style={{fontSize:11}}>Privacy note</b>
-            <p style={{fontSize:10,color:'var(--muted)',lineHeight:1.6,margin:'6px 0 0'}}>For You uses public GitHub profile/repository information plus the interests you provide. Your profile settings and recommendations are saved in this browser's local storage. Atlas does not need your GitHub password or private repository access.</p>
+            <b style={{fontSize:12}}>Privacy note</b>
+            <p style={{fontSize:12,color:'var(--muted)',lineHeight:1.6,margin:'6px 0 0'}}>For You uses public GitHub profile/repository information plus the interests you provide. Your profile settings and recommendations are saved in this browser's local storage. Atlas does not need your GitHub password or private repository access.</p>
           </div>
         </div>
       </div>
@@ -110,13 +110,18 @@ export default function ForYou(){
         <div className="tags">{result.detected?.map(x=><span className="tag" key={x}>{x}</span>)}</div>
       </div>
 
-      <section className="section">
+      {result.strongMatches?.length===0&&result.worthExploring?.length===0 ? <section className="panel section">
+        <h2>No matches yet</h2>
+        <p className="prose">Atlas could not connect your profile to the current project set. Try adding interests, describing what you are building, or using a different GitHub profile.</p>
+      </section> : null}
+
+      {result.strongMatches?.length ? <section className="section">
         <div className="sectionhead"><div><h2>Strong matches</h2><p>Projects with the strongest overlap with your stated and GitHub-derived interests.</p></div></div>
         <div className="grid">{result.strongMatches?.map(x=><Link className="panel" href={'/projects/'+x.project.id} key={x.project.id}>
           <div className="eyebrow">{'Match '+x.score}</div><h3>{x.project.project_name}</h3>
-          <p className="prose">{x.project.description}</p><p style={{fontSize:11,color:'var(--muted)'}}>{x.reasons.join(' · ')}</p>
+          <p className="prose">{x.project.description}</p><p style={{fontSize:12,color:'var(--muted)'}}>{x.reasons.join(' · ')}</p>
         </Link>)}</div>
-      </section>
+      </section> : null}
 
       <section className="section">
         <div className="sectionhead"><div><h2>Worth exploring</h2><p>Lower-confidence matches that may still contain useful ideas.</p></div></div>

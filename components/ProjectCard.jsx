@@ -21,8 +21,8 @@ export default function ProjectCard({p,compact=false}){
       </div>
       {!compact && (
         <div style={{display:'flex',gap:7,marginTop:14}}>
-          <Link className="button" style={{fontSize:11,padding:'8px 10px'}} href={'/projects/'+p.id}>View project</Link>
-          <a className="button" style={{fontSize:11,padding:'8px 10px'}} href={p.github_repo} target="_blank" rel="noreferrer">GitHub ↗</a>
+          <Link className="button" style={{fontSize:12,padding:'8px 10px'}} href={'/projects/'+p.id}>View project</Link>
+          <a className="button" style={{fontSize:12,padding:'8px 10px'}} href={p.github_repo} target="_blank" rel="noreferrer">GitHub ↗</a>
         </div>
       )}
     </article>

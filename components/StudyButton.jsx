@@ -13,10 +13,15 @@ export default function StudyButton({project,repositoryIntelligence=null}){
       const items=JSON.parse(localStorage.getItem(KEY)||'[]');
       const existing=items.find(x=>x.project?.id===project.id);
       if(!existing){
+        // Source-file previews are never persisted to localStorage; only
+        // aggregate evidence (technologies, fingerprint) is kept.
+        const intelligence=repositoryIntelligence&&repositoryIntelligence.evidence
+          ?{...repositoryIntelligence,evidence:{...repositoryIntelligence.evidence,source_files:undefined,sample_files:undefined}}
+          :repositoryIntelligence;
         const next=[{
           id:Date.now(),
           project,
-          repositoryIntelligence,
+          repositoryIntelligence:intelligence,
           status:'To Study',
           collection:'General',
           whySaved:'',

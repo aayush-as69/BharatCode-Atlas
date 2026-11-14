@@ -14,7 +14,7 @@ export default async function HiddenGems(){
         <ProjectCard p={p} compact/>
         <div style={{padding:'0 16px 16px'}}>
           <div className="metrics"><b>{p.gem}<span> gem score</span></b><b>{p.interest}<span> technical interest</span></b></div>
-          <p style={{fontSize:10,color:'var(--muted)',margin:'10px 0 0'}}>Why: {p.why}</p>
+          <p style={{fontSize:12,color:'var(--muted)',margin:'10px 0 0'}}>Why: {p.why}</p>
         </div>
       </div>)}
     </div>

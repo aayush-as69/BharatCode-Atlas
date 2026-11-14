@@ -25,14 +25,13 @@ export default async function Compare({searchParams}){
     <p className="sub">Put 2–4 repositories side-by-side and compare their public source signals, architecture fingerprints, technologies, and engineering structure.</p>
 
     <form className="panel section" method="get">
-      <label style={{fontSize:11,color:'var(--muted)'}}>Choose projects</label>
+      <label style={{fontSize:12,color:'var(--muted)'}}>Choose projects</label>
       <div style={{display:'grid',gridTemplateColumns:'repeat(2,minmax(0,1fr))',gap:8,marginTop:8}}>
         {[0,1,2,3].map(i=><select key={i} name={'project'+i} defaultValue={ids[i]||''} className="input">
           <option value="">Project {i+1} — optional</option>
           {all.map(p=><option value={p.id} key={p.id}>{'#'+p.rank+' · '+p.project_name}</option>)}
         </select>)}
       </div>
-      <input type="hidden" name="projects" value={ids.join(',')} />
       <button className="button" type="submit" style={{marginTop:10}}>Compare selected projects</button>
       <div className="tags" style={{marginTop:10}}>
         {picker.slice(0,20).map(p=><Link className="chip" key={p.id} href={'/compare?projects='+encodeURIComponent([...new Set([...ids,p.id])].slice(0,4).join(','))}>{p.project_name}</Link>)}
@@ -46,7 +45,7 @@ export default async function Compare({searchParams}){
       </div>
       <div style={{overflowX:'auto'}}>
         <table style={{width:'100%',borderCollapse:'collapse',fontSize:12}}>
-          <thead><tr><th style={{textAlign:'left',padding:12}}>Source signal</th>{inspected.map(p=><th key={p.id} style={{textAlign:'left',padding:12,minWidth:190}}><Link href={'/projects/'+p.id}>{p.project_name}</Link><div style={{fontSize:10,color:'var(--muted)',marginTop:4}}>#{p.rank}</div></th>)}</tr></thead>
+          <thead><tr><th style={{textAlign:'left',padding:12}}>Source signal</th>{inspected.map(p=><th key={p.id} style={{textAlign:'left',padding:12,minWidth:190}}><Link href={'/projects/'+p.id}>{p.project_name}</Link><div style={{fontSize:12,color:'var(--muted)',marginTop:4}}>#{p.rank}</div></th>)}</tr></thead>
           <tbody>
             {[
               ['Votes',p=>p.votes],['GitHub stars at source capture',p=>p.github_stars],['Community score',p=>p.community_score],['Atlas relevance',relevance],['Hidden gem',hiddenGem]
