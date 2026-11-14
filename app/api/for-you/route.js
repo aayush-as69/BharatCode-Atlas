@@ -36,14 +36,27 @@ export async function POST(request){
     const recommendations=projects.map(project=>({project,...userOpportunity(project,userProfile)}))
       .filter(x=>x.score>0)
       .sort((a,b)=>b.score-a.score||b.project.community_score-a.project.community_score)
-      .slice(0,12);
+      .slice(0,18);
+
+    const strongMatches=recommendations.filter(x=>x.score>=55).slice(0,6);
+    const worthExploring=recommendations.filter(x=>x.score<55).slice(0,8);
+    const landscape={};
+    for(const r of recommendations){
+      for(const reason of r.reasons||[]){
+        const key=reason.split(' ')[0];
+        landscape[key]=(landscape[key]||0)+1;
+      }
+    }
 
     const active=Object.entries(userProfile.profile).filter(([,v])=>v).map(([k])=>k.replace(/([A-Z])/g,' $1'));
     return Response.json({
       github:githubData,
       profileSummary:active.length?'Atlas detected interest in '+active.slice(0,5).join(', ')+'.':'Atlas will use your project description and selected interests.',
       detected:userProfile.detected,
-      recommendations
+      recommendations,
+      strongMatches,
+      worthExploring,
+      landscape
     });
   }catch(error){
     return Response.json({error:'Could not build your profile. Please try again.'},{status:500});
