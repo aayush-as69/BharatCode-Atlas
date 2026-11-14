@@ -87,6 +87,18 @@ export default async function Compare({searchParams}){
     </section>
 
     <section className="panel section">
+      <div className="sectionhead"><div><h2>Architecture diff</h2><p>Layers detected in one selected repository but not another.</p></div></div>
+      <div className="grid">{inspected.map(p=>{
+        const mine=new Set((p.repo.ok?p.repo.architecture:[])||[]);
+        const others=new Set(inspected.filter(x=>x.id!==p.id).flatMap(x=>x.repo.ok?x.repo.architecture:[]));
+        const unique=[...mine].filter(x=>!others.has(x));
+        return <div className="panel" key={p.id}><h3>{p.project_name}</h3>
+          {unique.length?<div className="tags">{unique.map(x=><span className="tag" key={x}>{x}</span>)}</div>:<p className="prose">No architecture layer is unique within this comparison set.</p>}
+        </div>;
+      })}</div>
+    </section>
+
+    <section className="panel section">
       <h2>Evidence behind the comparison</h2>
       <p className="prose">Signals below come from public repository paths and README content. They are evidence indicators, not a full source-code audit.</p>
       <div className="grid">{inspected.map(p=><div className="panel" key={p.id}>
