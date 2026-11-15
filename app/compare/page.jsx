@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Nav from '@/components/Nav';
-import {getProjects,classify,relevance,hiddenGem} from '@/lib/source';
+import {getProjects,relevance,hiddenGem} from '@/lib/source';
+import {findProject} from '@/lib/dataset';
 import {inspectRepository} from '@/lib/github';
 import CompareStudyButton from '@/components/CompareStudyButton';
 
@@ -10,11 +11,12 @@ export default async function Compare({searchParams}){
   const selectedIds=[0,1,2,3].map(i=>String(sp?.['project'+i]||'')).filter(Boolean);
   const ids=[...new Set([...queryIds,...selectedIds])].slice(0,4);
   const all=await getProjects();
-  const picks=ids.length?ids.map(id=>all.find(p=>p.id===id)).filter(Boolean):all.slice(0,3);
+  const resolved=ids.map(id=>findProject(all,id)).filter(Boolean);
+  const picks=[...new Map(resolved.map(p=>[p.id,p])).values()];
+  const shown=picks.length?picks:all.slice(0,3);
   const picker=all.slice(0,40);
-  const inspected=await Promise.all(picks.map(async p=>{
-    try{return {...p,repo:await inspectRepository(p.github_repo)};}catch{return {...p,repo:{ok:false,error:'Repository inspection unavailable'}};}
-  }));
+  const inspected=await Promise.all(shown.map(async p=>({...p,repo:await inspectRepository(p.github_repo)})));
+  const failed=inspected.filter(p=>!p.repo.ok);
 
   const architectureKeys=['Frontend','Backend / API','Database','AI / LLM','RAG / Retrieval','Agents / Orchestration','Authentication','Deployment','Testing','Observability'];
   const technologyKeys=['Next.js','React','Python','FastAPI','Flask','Express','MongoDB','PostgreSQL','Supabase','Tailwind CSS','LangChain','LlamaIndex','OpenAI','Gemini','Vector DB','Docker','MCP'];
@@ -25,19 +27,20 @@ export default async function Compare({searchParams}){
     <p className="sub">Put 2–4 repositories side-by-side and compare their public source signals, architecture fingerprints, technologies, and engineering structure.</p>
 
     <form className="panel section" method="get">
-      <label style={{fontSize:11,color:'var(--muted)'}}>Choose projects</label>
+      <p className="label" id="compare-choose">Choose projects</p>
       <div style={{display:'grid',gridTemplateColumns:'repeat(2,minmax(0,1fr))',gap:8,marginTop:8}}>
-        {[0,1,2,3].map(i=><select key={i} name={'project'+i} defaultValue={ids[i]||''} className="input">
+        {[0,1,2,3].map(i=><select key={i} name={'project'+i} defaultValue={picks[i]?.id||''} className="input" aria-label={'Project '+(i+1)}>
           <option value="">Project {i+1} — optional</option>
           {all.map(p=><option value={p.id} key={p.id}>{'#'+p.rank+' · '+p.project_name}</option>)}
         </select>)}
       </div>
-      <input type="hidden" name="projects" value={ids.join(',')} />
       <button className="button" type="submit" style={{marginTop:10}}>Compare selected projects</button>
       <div className="tags" style={{marginTop:10}}>
-        {picker.slice(0,20).map(p=><Link className="chip" key={p.id} href={'/compare?projects='+encodeURIComponent([...new Set([...ids,p.id])].slice(0,4).join(','))}>{p.project_name}</Link>)}
+        {picker.slice(0,20).map(p=><Link className="chip" key={p.id} href={'/compare?projects='+encodeURIComponent([...new Set([...picks.map(x=>x.id),p.id])].slice(0,4).join(','))}>{p.project_name}</Link>)}
       </div>
     </form>
+
+    {failed.length?<p className="notice section">Repository evidence is unavailable for {failed.map(p=>p.project_name).join(', ')}: {failed[0].repo.error} Source-data rows below are still shown.</p>:null}
 
     <section className="panel section">
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',gap:12,marginBottom:12}}>
@@ -46,7 +49,7 @@ export default async function Compare({searchParams}){
       </div>
       <div style={{overflowX:'auto'}}>
         <table style={{width:'100%',borderCollapse:'collapse',fontSize:12}}>
-          <thead><tr><th style={{textAlign:'left',padding:12}}>Source signal</th>{inspected.map(p=><th key={p.id} style={{textAlign:'left',padding:12,minWidth:190}}><Link href={'/projects/'+p.id}>{p.project_name}</Link><div style={{fontSize:10,color:'var(--muted)',marginTop:4}}>#{p.rank}</div></th>)}</tr></thead>
+          <thead><tr><th style={{textAlign:'left',padding:12}}>Source signal</th>{inspected.map(p=><th key={p.id} style={{textAlign:'left',padding:12,minWidth:190}}><Link href={'/projects/'+encodeURIComponent(p.id)}>{p.project_name}</Link><div style={{fontSize:11,color:'var(--muted)',marginTop:4}}>#{p.rank}</div></th>)}</tr></thead>
           <tbody>
             {[
               ['Votes',p=>p.votes],['GitHub stars at source capture',p=>p.github_stars],['Community score',p=>p.community_score],['Atlas relevance',relevance],['Hidden gem',hiddenGem]
@@ -67,7 +70,7 @@ export default async function Compare({searchParams}){
     </section>
 
     <section className="panel section">
-      <div className="sectionhead"><div><h2>Technology stack</h2><p>Detected from repository file paths and README evidence.</p></div></div>
+      <div className="sectionhead"><div><h2>Technology stack</h2><p>Detected from dependency manifests, repository file paths and README terms.</p></div></div>
       <div style={{overflowX:'auto'}}>
         <table style={{width:'100%',borderCollapse:'collapse',fontSize:12}}>
           <thead><tr><th style={{textAlign:'left',padding:12}}>Technology</th>{inspected.map(p=><th key={p.id} style={{textAlign:'left',padding:12,minWidth:170}}>{p.project_name}</th>)}</tr></thead>
@@ -100,7 +103,7 @@ export default async function Compare({searchParams}){
 
     <section className="panel section">
       <h2>Evidence behind the comparison</h2>
-      <p className="prose">Signals below come from public repository paths and README content. They are evidence indicators, not a full source-code audit.</p>
+      <p className="prose">Signals below come from dependency manifests, public repository paths and README terms. They are evidence indicators, not a full source-code audit.</p>
       <div className="grid">{inspected.map(p=><div className="panel" key={p.id}>
         <h3>{p.project_name}</h3>
         {p.repo.ok ? <div className="list">

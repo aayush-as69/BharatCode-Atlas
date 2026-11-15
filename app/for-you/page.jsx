@@ -1,20 +1,23 @@
 'use client';
 
 import Nav from '@/components/Nav';
-import {useEffect,useMemo,useState} from 'react';
+import {useEffect,useState} from 'react';
 import Link from 'next/link';
 
 const interests=['AI / LLM','RAG / Retrieval','AI Agents','Security','Developer Tools','Voice / Audio','Vision / OCR','Governance / Compliance','Civic / Public'];
 const STORAGE='bharatcode-atlas-for-you';
+const MAX_PROFILES=5;
 
 export default function ForYou(){
   const [github,setGithub]=useState('');
   const [repos,setRepos]=useState([]);
+  const [extra,setExtra]=useState('');
   const [building,setBuilding]=useState('');
   const [selected,setSelected]=useState([]);
   const [loading,setLoading]=useState(false);
   const [result,setResult]=useState(null);
   const [error,setError]=useState('');
+  const [hydrated,setHydrated]=useState(false);
 
   useEffect(()=>{
     try{
@@ -24,78 +27,81 @@ export default function ForYou(){
         setSelected(saved.selected||[]); setResult(saved.result||null);
       }
     }catch{}
+    setHydrated(true);
   },[]);
 
-  const save=(next)=>{
-    try{localStorage.setItem(STORAGE,JSON.stringify(next));}catch{}
-  };
+  // One place persists everything, so saved state can never be one step stale.
+  useEffect(()=>{
+    if(!hydrated) return;
+    try{localStorage.setItem(STORAGE,JSON.stringify({github,repos,building,selected,result}));}catch{}
+  },[hydrated,github,repos,building,selected,result]);
 
-  const toggleInterest=(x)=>{
-    setSelected(s=>{
-      const next=s.includes(x)?s.filter(y=>y!==x):[...s,x];
-      save({github,repos,building,selected:next,result});
-      return next;
-    });
-  };
+  const toggleInterest=x=>setSelected(s=>s.includes(x)?s.filter(y=>y!==x):[...s,x]);
+
+  const profiles=[github.trim(),...repos].filter(Boolean);
 
   const run=async()=>{
+    if(!profiles.length&&!building.trim()&&!selected.length){
+      setError('Add a GitHub profile, describe what you are building, or pick at least one interest.');
+      return;
+    }
     setLoading(true);setError('');
     try{
-      const allGithub=[github,...repos].filter(Boolean);
-      const res=await fetch('/api/for-you',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({github:allGithub[0]||'',githubProfiles:allGithub,building,interests:selected})});
-      const data=await res.json();
+      const res=await fetch('/api/for-you',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({github:profiles[0]||'',githubProfiles:profiles,building,interests:selected})});
+      const data=await res.json().catch(()=>({}));
       if(!res.ok) throw new Error(data.error||'Unable to build your profile');
       setResult(data);
-      save({github,repos,building,selected,result:data});
-    }catch(e){setError(e.message);}
+    }catch(e){setError(e.message||'Unable to build your profile');}
     finally{setLoading(false);}
   };
 
-  const addRepo=()=>{
-    const value=prompt('Enter another public GitHub profile URL or username');
-    if(!value?.trim()) return;
-    const next=[...repos,value.trim()];
-    setRepos(next);save({github,repos:next,building,selected,result});
+  const addProfile=e=>{
+    e.preventDefault();
+    const value=extra.trim();
+    if(!value||repos.includes(value)||repos.length>=MAX_PROFILES-1) return;
+    setRepos([...repos,value]);
+    setExtra('');
   };
 
   const clear=()=>{
-    localStorage.removeItem(STORAGE);
-    setGithub('');setRepos([]);setBuilding('');setSelected([]);setResult(null);setError('');
+    try{localStorage.removeItem(STORAGE);}catch{}
+    setGithub('');setRepos([]);setExtra('');setBuilding('');setSelected([]);setResult(null);setError('');
   };
 
-  const profileCount=useMemo(()=>1+repos.length,[repos]);
+  const strong=result?.strongMatches||[];
+  const worth=result?.worthExploring||[];
 
   return <div className="shell"><Nav/><main className="main">
     <div className="eyebrow">Personal research mode</div>
     <h1 className="title">For You.</h1>
-    <p className="sub">Build a private-on-this-device research profile from your GitHub and interests. Atlas uses it to find projects worth studying.</p>
+    <p className="sub">Build a research profile from your GitHub and interests. Atlas uses it to find projects worth studying.</p>
 
     <section className="panel section">
       <div className="two">
         <div>
-          <label className="label">GitHub profile</label>
-          <input className="input" value={github} onChange={e=>setGithub(e.target.value)} placeholder="username or github.com/username"/>
-          <div style={{marginTop:10}}>
-            {repos.map((x,i)=><div className="chip" key={x}>{x}<button type="button" onClick={()=>{
-              const nextRepos=repos.filter((_,j)=>j!==i);
-              setRepos(nextRepos);
-              save({github,repos:nextRepos,building,selected,result});
-            }} style={{marginLeft:8}}>×</button></div>)}
-            <button type="button" className="tag" onClick={addRepo}>+ Add another profile</button>
+          <label className="label" htmlFor="fy-github">GitHub profile</label>
+          <input id="fy-github" className="input" value={github} onChange={e=>setGithub(e.target.value)} placeholder="username or github.com/username" maxLength={200}/>
+          <div className="tags" style={{marginTop:10}}>
+            {repos.map((x,i)=><span className="chip" key={x+'-'+i}>{x}<button type="button" aria-label={'Remove '+x} onClick={()=>setRepos(repos.filter((_,j)=>j!==i))} style={{marginLeft:8}}>×</button></span>)}
           </div>
-          <label className="label" style={{marginTop:18}}>What are you building?</label>
-          <textarea className="input" rows="5" value={building} onChange={e=>setBuilding(e.target.value)} placeholder="I'm building an AI voice agent for customer support..."/>
+          {repos.length<MAX_PROFILES-1&&<form onSubmit={addProfile} style={{display:'flex',gap:8,marginTop:10}}>
+            <input className="input" aria-label="Another GitHub profile" value={extra} onChange={e=>setExtra(e.target.value)} placeholder="Another username or profile URL" maxLength={200} style={{flex:1}}/>
+            <button type="submit" className="tag">+ Add</button>
+          </form>}
+          <label className="label" htmlFor="fy-building" style={{marginTop:18}}>What are you building?</label>
+          <textarea id="fy-building" className="input" rows="5" value={building} onChange={e=>setBuilding(e.target.value)} maxLength={1000} placeholder="I'm building an AI voice agent for customer support..."/>
         </div>
         <div>
-          <label className="label">What do you want to learn?</label>
-          <div className="tags" style={{marginTop:10}}>
-            {interests.map(x=><button type="button" className={'tag '+(selected.includes(x)?'active':'')} key={x} onClick={()=>toggleInterest(x)}>{x}</button>)}
+          <p className="label" id="fy-interests">What do you want to learn?</p>
+          <div className="tags" role="group" aria-labelledby="fy-interests" style={{marginTop:10}}>
+            {interests.map(x=><button type="button" aria-pressed={selected.includes(x)} className={'tag '+(selected.includes(x)?'active':'')} key={x} onClick={()=>toggleInterest(x)}>{x}</button>)}
           </div>
-          <button className="button" style={{marginTop:20}} onClick={run} disabled={loading}>{loading?'Building your profile…':'Refresh recommendations →'}</button>
+          <button className="button" type="button" style={{marginTop:20}} onClick={run} disabled={loading}>{loading?'Building your profile…':'Refresh recommendations →'}</button>
           <button type="button" className="tag" style={{marginTop:10,display:'block'}} onClick={clear}>Clear profile</button>
+          {error&&<p role="alert" className="notice" style={{marginTop:12}}>{error}</p>}
           <div className="panel" style={{marginTop:14,padding:12}}>
-            <b style={{fontSize:11}}>Privacy note</b>
-            <p style={{fontSize:10,color:'var(--muted)',lineHeight:1.6,margin:'6px 0 0'}}>For You uses public GitHub profile/repository information plus the interests you provide. Your profile settings and recommendations are saved in this browser's local storage. Atlas does not need your GitHub password or private repository access.</p>
+            <b style={{fontSize:12}}>Privacy note</b>
+            <p style={{fontSize:11,color:'var(--muted)',lineHeight:1.6,margin:'6px 0 0'}}>Atlas sends the GitHub usernames, description and interests you enter to its server so it can read public GitHub profile data and score projects; it does not store them there. Your settings and results are saved only in this browser's local storage. Atlas never asks for your GitHub password or private repository access.</p>
           </div>
         </div>
       </div>
@@ -105,31 +111,30 @@ export default function ForYou(){
       <div className="panel">
         <div className="sectionhead">
           <div><div className="eyebrow">Your Atlas profile</div><h2>{result.github?.login||'Researcher'}</h2><p>{result.profileSummary}</p></div>
-          <span className="chip">{profileCount+' GitHub profile'+(profileCount===1?'':'s')}</span>
+          {result.github&&<span className="chip">{(result.github.profiles?.length||1)+' GitHub profile'+((result.github.profiles?.length||1)===1?'':'s')}</span>}
         </div>
-        <div className="tags">{result.detected?.map(x=><span className="tag" key={x}>{x}</span>)}</div>
+        {result.detected?.length?<><p className="prose">Languages and topics Atlas detected on your GitHub.</p><div className="tags">{result.detected.map(x=><span className="tag" key={x}>{x}</span>)}</div></>:null}
       </div>
 
-      <section className="section">
-        <div className="sectionhead"><div><h2>Strong matches</h2><p>Projects with the strongest overlap with your stated and GitHub-derived interests.</p></div></div>
-        <div className="grid">{result.strongMatches?.map(x=><Link className="panel" href={'/projects/'+x.project.id} key={x.project.id}>
-          <div className="eyebrow">{'Match '+x.score}</div><h3>{x.project.project_name}</h3>
-          <p className="prose">{x.project.description}</p><p style={{fontSize:11,color:'var(--muted)'}}>{x.reasons.join(' · ')}</p>
-        </Link>)}</div>
-      </section>
+      {!strong.length&&!worth.length&&<div className="panel section">
+        <h2>No matching projects</h2>
+        <p className="prose">Nothing in the corpus overlapped with this profile. Try selecting more interests, or describe your idea in more detail.</p>
+      </div>}
 
-      <section className="section">
+      {strong.length>0&&<section className="section">
+        <div className="sectionhead"><div><h2>Strong matches</h2><p>Projects with the strongest overlap with your stated and GitHub-derived interests.</p></div></div>
+        <div className="grid">{strong.map(x=><Link className="panel" href={'/projects/'+encodeURIComponent(x.project.id)} key={x.project.id}>
+          <div className="eyebrow">{'Match '+x.score}</div><h3>{x.project.project_name}</h3>
+          <p className="prose">{x.project.description}</p><p style={{fontSize:12,color:'var(--muted)'}}>{x.reasons.join(' · ')}</p>
+        </Link>)}</div>
+      </section>}
+
+      {worth.length>0&&<section className="section">
         <div className="sectionhead"><div><h2>Worth exploring</h2><p>Lower-confidence matches that may still contain useful ideas.</p></div></div>
-        <div className="list">{result.worthExploring?.map(x=><Link href={'/projects/'+x.project.id} key={x.project.id}>
+        <div className="list">{worth.map(x=><Link href={'/projects/'+encodeURIComponent(x.project.id)} key={x.project.id}>
           <b>{x.project.project_name}</b><small>{'Match '+x.score+' · '+x.reasons.join(' · ')}</small>
         </Link>)}</div>
-      </section>
-
-      <section className="panel section">
-        <h2>Your technology landscape</h2>
-        <p className="prose">Signals Atlas detected from your GitHub profiles and selected interests.</p>
-        <div className="tags">{result.detected?.map(x=><span className="tag" key={x}>{x}</span>)}</div>
-      </section>
+      </section>}
     </section>}
   </main></div>;
 }

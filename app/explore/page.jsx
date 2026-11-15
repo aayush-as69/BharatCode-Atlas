@@ -36,7 +36,7 @@ export default async function Explore({searchParams}){
       <Nav/>
       <main className="main">
         <div className="eyebrow">Project explorer</div>
-        <h1 className="title">294 projects, one research surface.</h1>
+        <h1 className="title">{projects.length} projects, one research surface.</h1>
         <p className="sub">Search the published project metadata. Category chips and relevance scores are Atlas-derived research signals, not official BharatCode classifications.</p>
 
         <form className="search">
