@@ -9,7 +9,7 @@ export default function Nav(){
       </div>
       <nav className="nav" aria-label="Atlas navigation">
         <Link href="/">Overview</Link>
-        <Link href="/explore">Explore 294</Link>
+        <Link href="/explore">Explore</Link>
         <Link href="/categories">Categories</Link>
         <Link href="/hidden-gems">Hidden Gems</Link>
         <Link href="/compare">Compare</Link>
@@ -19,9 +19,9 @@ export default function Nav(){
         <Link href="/rankings">Research Rankings</Link>
         <Link href="/ai-researcher">AI Researcher</Link>
       </nav>
-      <div style={{marginTop:28,padding:'12px',borderTop:'1px solid var(--line)',color:'var(--muted)',fontSize:10,lineHeight:1.5}}>
+      <div className="side-note" style={{marginTop:28,padding:'12px',borderTop:'1px solid var(--line)',color:'var(--muted)',fontSize:11,lineHeight:1.5}}>
         <b style={{color:'var(--text)'}}>Source</b><br/>
-        294 published Build League projects. Atlas scores are derived research signals.
+        Published Build League projects. Atlas scores are derived research signals.
       </div>
     </aside>
   );

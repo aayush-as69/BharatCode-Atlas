@@ -26,7 +26,7 @@ export default async function Categories(){
       <main className="main">
         <div className="eyebrow">Research taxonomy</div>
         <h1 className="title">Categories</h1>
-        <p className="sub">Atlas-derived signals help you move from 294 projects to a smaller research surface. A project can belong to multiple categories.</p>
+        <p className="sub">Atlas-derived signals help you move from {projects.length} projects to a smaller research surface. A project can belong to multiple categories.</p>
         <div className="section">
           {groups.map(g=>(
             <section className="panel" style={{marginBottom:14}} key={g.key}>

@@ -1,4 +1,17 @@
 node_modules
 .next
+out
 *.tsbuildinfo
+next-env.d.ts
+
+# Environment files: never commit real secrets. .env.example is the template.
 .env
+.env.*
+!.env.example
+
+# Platform and editor files
+.vercel
+.DS_Store
+*.log
+npm-debug.log*
+coverage

@@ -8,22 +8,22 @@ It is designed around one question:
 
 ## What Atlas does
 
-- Loads the full 294-project BharatCode Build League corpus
+- Loads the full BharatCode Build League corpus (294 projects at the last sync)
 - Keeps BharatCode source facts separate from Atlas-derived analysis
 - Search, filtering, categories, rankings, and hidden-gem discovery
 - Universal **For You** recommendations using interests and optional public GitHub profiles
 - Project detail pages with repository intelligence
 - Architecture fingerprints backed by repository evidence
-- Selective inspection of public repository files
-- Dependency-level technology evidence
+- Selective inspection of public repository manifests and deployment/CI configuration (secrets masked)
+- Dependency-level technology evidence parsed from `package.json`, `requirements.txt`, `pyproject.toml`
 - Compare **2–4 projects** side-by-side
 - Compare source metrics, architecture layers, technologies, and evidence
 - **Study this** workflow from any project
 - Local Research Workspace with study status, notes, questions, ideas, and learning goals
 - Saved repository evidence snapshots for research entries
-- AI Researcher grounded in retrieved Atlas project records
-- JavaScript-only repository verification
-- GitHub Actions CI for JavaScript verification and production builds
+- AI Researcher grounded in retrieved Atlas project records (keyword retrieval with stopword filtering and synonyms)
+- JavaScript-only repository verification, dataset validation, and a `node:test` suite
+- GitHub Actions CI: verification, tests, production build, and a separate dependency audit
 
 ## Research workflow
 
@@ -47,13 +47,12 @@ To Study → Studying → Learned → Applied
 
 Atlas does not pretend that a keyword badge is a complete code audit.
 
-The repository inspector can use:
+The repository inspector uses:
 
 - public GitHub repository metadata
 - repository file paths
-- README content
-- dependency manifests
-- a small allowlist of high-value source/configuration files
+- README content (as the weakest evidence)
+- dependency manifests, parsed for exact dependency names
 
 It produces:
 
@@ -62,9 +61,17 @@ It produces:
 - dependency evidence
 - architecture hypotheses
 - architecture fingerprints
-- inspected-file previews
+- previews of manifests and deployment/CI configuration only
 
-Source inspection is intentionally bounded. Atlas does not request private repository access, passwords, or arbitrary secret files.
+Evidence order of trust is dependency manifests, then file paths, then README terms. Matching is by exact dependency name or path segment, never raw substring.
+
+Source inspection is intentionally bounded:
+
+- Atlas never requests private repository access or passwords.
+- Entry and API source files (for example `server.js`, `src/index.js`, `app/api/**`) are listed with their role but **their contents are never fetched or shown**.
+- Files such as `.env*`, `*secret*`, `*token*`, `*.pem` and `*.key` are never requested.
+- Previews are passed through a redactor that masks common token formats, `KEY=value` assignments, URL credentials and private-key blocks. Redaction is best effort, not a guarantee.
+- Saved research snapshots keep only technology, architecture and fingerprint summaries, never file previews.
 
 ## Compare
 
@@ -108,6 +115,12 @@ Research is currently stored in browser localStorage. No Atlas account is requir
 
 BharatCode source facts are kept separate from Atlas-derived analysis.
 
+Dataset notes:
+
+- Descriptions are truncated at the source (about 190 characters), so description-based signals only see that text.
+- Rows are flagged in `quality_flags` when several entries share one repository (`duplicate_repo`) or the description is too short to score (`minimal_description`). Hidden gems skips minimal rows and shows each shared repository once.
+- Project ids are derived from the repository (`owner-repo`, with `-2`, `-3` for repeated repositories), not from leaderboard rank, so they survive re-syncs. Old `p001`-style links redirect to the new ids.
+
 Atlas does not present:
 
 - keyword detection
@@ -139,13 +152,30 @@ There is no TypeScript source, `tsconfig.json`, or TypeScript Next.js configurat
 ## Run locally
 
 ```bash
-npm install
+npm ci
 npm run verify:js
+npm run verify:data
+npm test
 npm run build
 npm run dev
 ```
 
 Then open the local Next.js development server.
+
+### Environment variables
+
+Copy `.env.example` to `.env.local` (git-ignored). All variables are optional:
+
+| Variable | Purpose |
+|---|---|
+| `GITHUB_TOKEN` | Raises GitHub API limits for repository inspection, `/intelligence` and For You. Without it GitHub allows 60 requests per hour per IP and those features degrade to a clear "rate limit" message. |
+| `BHARATCODE_API_KEY` | Enables AI Researcher answers. Without it the page shows retrieved projects only. |
+| `BHARATCODE_BASE_URL` | Model API base URL (default `https://bharatcode.ai/api/model/v1`). |
+| `BHARATCODE_MODEL` | Model name (default `qwen-3.8-27b`). |
+
+### Tests
+
+`npm test` runs `node:test` suites for scoring, retrieval, redaction, repository heuristics, the rate limiter, request-body caps, dataset integrity, browser storage, the GitHub inspector (with a mocked GitHub) and both API route handlers. No network or extra dependencies are needed.
 
 ## Data synchronization
 
@@ -155,37 +185,56 @@ The repository includes a source synchronization script:
 npm run data:sync
 ```
 
-It validates that the BharatCode source currently contains the expected 294 project cards before writing the extracted dataset.
+It parses the BharatCode project page, decodes HTML entities, assigns stable repository-based ids, adds quality flags, validates the result (unique ids and ranks, numeric fields, GitHub repository URLs) and only then writes `data/projects.json`. It refuses to write an invalid dataset and reports when the project count changed. `npm run verify:data` runs the same validation on the committed file.
 
 ## GitHub intelligence
 
 Optional `GITHUB_TOKEN` support can increase GitHub API limits.
 
-The application can still inspect public repositories without a token subject to GitHub's unauthenticated API limits.
+The application can still inspect public repositories without a token subject to GitHub's unauthenticated API limits. All GitHub calls have an 8 second timeout, results are cached in memory, failures are cached for two minutes so a page cannot hammer GitHub while it is rate limiting, and `/intelligence` samples the 24 top-ranked repositories at request time with bounded concurrency (it is never rendered at build time).
 
 ## AI Researcher
 
 The AI Researcher first retrieves matching Atlas project records and then uses the configured model provider when available.
 
-The interface exposes retrieved project evidence alongside the answer so users can inspect the underlying projects.
+Retrieval tokenizes the question, drops stopwords, keeps short technical terms such as `rag`, `llm` and `ocr`, expands a few synonyms, and ranks projects by weighted hits (name matches count more than description matches). Project text is passed to the model as fenced, untrusted data.
+
+The interface exposes retrieved project evidence alongside the answer so users can inspect the underlying projects. If the model is not configured or unavailable, the retrieved projects are still shown with an explanatory message.
+
+### API limits
+
+| Route | Limits |
+|---|---|
+| `POST /api/research` | 5 requests per minute per client, 60 per minute overall, 2 concurrent model calls, 8 KB body, 600-character question |
+| `POST /api/for-you` | 10 requests per minute per client, 8 KB body, up to 5 GitHub profiles |
+
+Limits are held in memory per server instance, so on serverless platforms they are a best-effort guard, not a global quota. The client key comes from the platform-provided `x-vercel-forwarded-for` / `x-real-ip` header, or the last `x-forwarded-for` hop; the client-controlled first hop is ignored. Use a shared store (for example Redis or your platform's rate limiting) if you need strict quotas.
 
 ## Dependency security
 
-Atlas pins its direct production dependency versions in `package.json`. Next.js is kept on the patched 15.5.x maintenance line, and React is pinned to a patched 19.2.x release. The project uses npm; after dependency changes, generate and commit `package-lock.json` with `npm install` in a networked npm environment so CI can use reproducible installs.
+Atlas pins its direct production dependency versions in `package.json` (Next.js 15.5.x, React 19.2.x, `openai` 6.49.0) and commits `package-lock.json`, so CI and deployments use reproducible `npm ci` installs. After changing a dependency, run `npm install` in a networked environment and commit the updated lockfile. Run `npm run audit:prod` (also run weekly in CI) and check the official Next.js advisories before deploying.
 
 ## CI
 
-GitHub Actions runs:
+GitHub Actions runs, on Node 20 and 22:
 
 ```text
-npm install
+npm ci
     ↓
 npm run verify:js
+    ↓
+npm run verify:data
+    ↓
+npm test
     ↓
 npm run build
 ```
 
-This protects the JavaScript-only requirement and catches production-build regressions.
+A separate, non-blocking `audit` job runs `npm run audit:prod` on every push and weekly, so a newly published advisory does not block unrelated pull requests. The workflow has read-only `contents` permission. Actions are referenced by major-version tag; pin them to commit SHAs if your policy requires it.
+
+## Deployment
+
+Atlas is a standard Next.js app: `npm ci && npm run build && npm start`. It needs no database. Set the optional environment variables above in your platform. There is no dedicated health-check route; probe `/`. Security headers (`X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`) are set in `next.config.mjs`; add a `Content-Security-Policy` suited to your host if needed.
 
 ## Current limitations
 

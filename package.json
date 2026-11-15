@@ -2,11 +2,14 @@
   "name": "bharatcode-atlas",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "verify:js": "node scripts/verify-js.mjs",
+    "verify:data": "node scripts/verify-data.mjs",
+    "test": "node --import ./test/helpers/register.mjs --test test/*.test.mjs",
     "data:sync": "node scripts/sync-projects.mjs",
     "audit:prod": "npm audit --omit=dev --audit-level=high"
   },
@@ -14,7 +17,7 @@
     "next": "15.5.29",
     "react": "19.2.9",
     "react-dom": "19.2.9",
-    "openai": "^6.16.0"
+    "openai": "6.49.0"
   },
   "packageManager": "npm@11.6.2",
   "engines": {
