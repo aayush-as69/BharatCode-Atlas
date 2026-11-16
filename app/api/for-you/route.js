@@ -1,6 +1,6 @@
 import { getProjects, userOpportunity, buildUserProfile, STRONG_MATCH_SCORE, INTEREST_LABELS } from '@/lib/source';
 import { createRateLimiter, getClientKey } from '@/lib/rate-limit';
-import { readJsonCapped, BodyTooLargeError, json } from '@/lib/http';
+import { readJsonCapped, rejectUnsuitableRequest, BodyTooLargeError, BodyTimeoutError, json } from '@/lib/http';
 import { mapLimit } from '@/lib/github';
 
 const MAX_BODY_BYTES = 8_192;
@@ -11,6 +11,8 @@ const GITHUB_TIMEOUT_MS = 8_000;
 const LOGIN_PATTERN = /^[A-Za-z0-9](?:[A-Za-z0-9-]{0,38})$/;
 
 const limiter = createRateLimiter({ windowMs: 60_000, max: 10 });
+// Ceiling across all clients: each request fans out to up to ~10 GitHub calls.
+const globalLimiter = createRateLimiter({ windowMs: 60_000, max: 120, maxKeys: 1 });
 
 class UpstreamError extends Error {
   constructor(rateLimited) {
@@ -49,15 +51,19 @@ async function loadProfile(login, headers) {
 
 export async function POST(request) {
   const limit = limiter.check(getClientKey(request.headers));
-  if (!limit.allowed) {
-    return json({ error: 'Too many requests. Please try again shortly.' }, 429, { 'Retry-After': String(limit.retryAfter) });
+  if (!limit.allowed || !globalLimiter.check('global').allowed) {
+    return json({ error: 'Too many requests. Please try again shortly.' }, 429, { 'Retry-After': String(limit.retryAfter || 30) });
   }
+
+  const rejected = rejectUnsuitableRequest(request);
+  if (rejected) return rejected;
 
   let body;
   try {
     body = await readJsonCapped(request, MAX_BODY_BYTES);
   } catch (error) {
     if (error instanceof BodyTooLargeError) return json({ error: 'Request is too large.' }, 413);
+    if (error instanceof BodyTimeoutError) return json({ error: 'Request body took too long to arrive.' }, 408);
     return json({ error: 'Request body must be valid JSON.' }, 400);
   }
   if (!body || typeof body !== 'object') return json({ error: 'Request body must be a JSON object.' }, 400);
