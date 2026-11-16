@@ -3,6 +3,8 @@ import Nav from '@/components/Nav';
 import ProjectCard from '@/components/ProjectCard';
 import {getProjects,classify} from '@/lib/source';
 
+export const metadata={title:'Categories'};
+
 const categories=[
   ['agents','AI Agents','Agents, autonomous workflows and orchestration'],
   ['rag','RAG / Retrieval','Retrieval, embeddings and vector-search signals'],
@@ -23,7 +25,7 @@ export default async function Categories(){
   return (
     <div className="shell">
       <Nav/>
-      <main className="main">
+      <main id="main" className="main">
         <div className="eyebrow">Research taxonomy</div>
         <h1 className="title">Categories</h1>
         <p className="sub">Atlas-derived signals help you move from {projects.length} projects to a smaller research surface. A project can belong to multiple categories.</p>

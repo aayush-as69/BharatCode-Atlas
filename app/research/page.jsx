@@ -68,7 +68,7 @@ export default function Research(){
   const comparedIds=selected?.comparison||[];
   const isComparison=comparedIds.length>0;
 
-  return <div className="shell"><Nav/><main className="main">
+  return <div className="shell"><Nav/><main id="main" className="main">
     <div className="eyebrow">Personal workspace</div>
     <h1 className="title">My research.</h1>
     <p className="sub">Turn projects into study notes, architecture observations, ideas, questions, and implementation lessons. Everything here stays in this browser.</p>

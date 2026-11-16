@@ -1,7 +1,7 @@
 import Nav from '@/components/Nav';
 
 export default function Loading(){
-  return <div className="shell"><Nav/><main className="main">
+  return <div className="shell"><Nav/><main id="main" className="main">
     <div className="skel skel-line" style={{width:210}}/>
     <div className="skel skel-title" style={{width:460,margin:'18px 0 14px'}}/>
     <div className="skel skel-line" style={{width:'65%'}}/>

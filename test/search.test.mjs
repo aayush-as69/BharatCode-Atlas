@@ -42,3 +42,9 @@ test('results respect the limit and are deterministic', () => {
   assert.equal(a.length, 5);
   assert.deepEqual(a.map((p) => p.id), b.map((p) => p.id));
 });
+
+test('tokenize: leading # and + are stripped, trailing ones kept', () => {
+  assert.ok(tokenize('#rag').includes('rag'));
+  assert.ok(tokenize('+voice').includes('voice'));
+  assert.ok(tokenize('c++ and c#').some((t) => t === 'c++' || t.startsWith('c+')));
+});

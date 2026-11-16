@@ -2,6 +2,8 @@ import Nav from '@/components/Nav';
 import Link from 'next/link';
 import {getProjects,architectureProfile,researchScore,hiddenGem} from '@/lib/source';
 
+export const metadata={title:'Research rankings'};
+
 // Rankings use only the published project text and numbers. Repository-level
 // engineering signals (frontend, database, testing, ...) need a GitHub
 // inspection per repo, so they are shown on project and Compare pages instead.
@@ -12,7 +14,7 @@ export default async function Rankings(){
   const rows=projects.map(p=>({...p,profile:architectureProfile(p),research:researchScore(p),gem:hiddenGem(p)}));
   const scoreFor=(row,key)=>row.profile.dimensions[key]?row.research:0;
   const overall=[...rows].sort((a,b)=>b.research-a.research||a.rank-b.rank).slice(0,15);
-  return <div className="shell"><Nav/><main className="main">
+  return <div className="shell"><Nav/><main id="main" className="main">
     <div className="eyebrow">Research rankings</div>
     <h1 className="title">What should you investigate?</h1>
     <p className="sub">Rankings are Atlas research signals, not official competition awards. They combine each project's published description, votes, stars and community score. Repository-level evidence is available on individual project pages and in Compare.</p>

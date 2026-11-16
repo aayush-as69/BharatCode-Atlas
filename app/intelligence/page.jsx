@@ -3,6 +3,8 @@ import Link from 'next/link';
 import {getProjects} from '@/lib/source';
 import {inspectRepository,mapLimit} from '@/lib/github';
 
+export const metadata={title:'Repository intelligence'};
+
 // Rendered per request (never at build time, where network failures would be
 // baked into the page). GitHub responses are cached by Next for an hour, and
 // failures are remembered briefly by lib/github.js.
@@ -17,7 +19,15 @@ export default async function Intelligence(){
   const architecture=['Frontend','Backend / API','Database','AI / LLM','RAG / Retrieval','Agents / Orchestration','Authentication','Deployment','Testing','Observability'];
 
   // Top-ranked projects, one row per distinct repository.
-  const sample=[...new Map(projects.map(p=>[p.github_repo.toLowerCase(),p])).values()].slice(0,SAMPLE_SIZE);
+  const seen=new Set();
+  const sample=[];
+  for(const p of projects){ // dataset is rank-ordered: keep the best-ranked entry per repository
+    const key=p.github_repo.toLowerCase();
+    if(seen.has(key)) continue;
+    seen.add(key);
+    sample.push(p);
+    if(sample.length>=SAMPLE_SIZE) break;
+  }
   const results=await mapLimit(sample,CONCURRENCY,async p=>({...p,repo:await inspectRepository(p.github_repo,{light:true})}));
   const rows=results.filter(x=>x.repo.ok);
   const failed=results.length-rows.length;
@@ -26,7 +36,7 @@ export default async function Intelligence(){
   const counts=Object.fromEntries(requested.map(t=>[t,rows.filter(x=>x.repo.technologies.includes(t)).length]));
   const archCounts=Object.fromEntries(architecture.map(t=>[t,rows.filter(x=>x.repo.architecture.includes(t)).length]));
 
-  return <div className="shell"><Nav/><main className="main">
+  return <div className="shell"><Nav/><main id="main" className="main">
     <div className="eyebrow">Repository intelligence</div>
     <h1 className="title">What are these projects actually built with?</h1>
     <p className="sub">Atlas samples the {SAMPLE_SIZE} top-ranked public GitHub repositories for cross-corpus architecture signals. Individual project pages and Compare inspect selected repositories on demand. Signals are evidence-based heuristics, not claims that every detected component is actively used in production.</p>

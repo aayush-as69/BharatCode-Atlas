@@ -2,10 +2,12 @@ import Nav from '@/components/Nav';
 import ProjectCard from '@/components/ProjectCard';
 import {getProjects,hiddenGem,whyHiddenGem,technicalInterest} from '@/lib/source';
 
+export const metadata={title:'Hidden gems'};
+
 export default async function HiddenGems(){
   const projects=(await getProjects()).map(p=>({...p,gem:hiddenGem(p),interest:technicalInterest(p),why:whyHiddenGem(p)}))
     .sort((a,b)=>b.gem-a.gem||b.interest-a.interest);
-  return <div className="shell"><Nav/><main className="main">
+  return <div className="shell"><Nav/><main id="main" className="main">
     <div className="eyebrow">Popularity ≠ research value</div>
     <h1 className="title">Hidden gems.</h1>
     <p className="sub">Projects where Atlas sees an interesting combination of low popularity and useful technical/problem-space signals. This is a heuristic shortlist, not a quality verdict.</p>

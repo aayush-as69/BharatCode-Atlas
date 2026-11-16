@@ -5,23 +5,30 @@ import {findProject} from '@/lib/dataset';
 import {inspectRepository} from '@/lib/github';
 import CompareStudyButton from '@/components/CompareStudyButton';
 
+export const metadata={title:'Compare'};
+
+// Inspects repositories per request; never at build time.
+export const dynamic='force-dynamic';
+
 export default async function Compare({searchParams}){
   const sp=await searchParams;
   const queryIds=String(sp?.projects||'').split(',').filter(Boolean);
   const selectedIds=[0,1,2,3].map(i=>String(sp?.['project'+i]||'')).filter(Boolean);
-  const ids=[...new Set([...queryIds,...selectedIds])].slice(0,4);
+  const ids=[...new Set([...queryIds,...selectedIds])].slice(0,12);
   const all=await getProjects();
-  const resolved=ids.map(id=>findProject(all,id)).filter(Boolean);
-  const picks=[...new Map(resolved.map(p=>[p.id,p])).values()];
+  const lookups=ids.map(id=>({id,project:findProject(all,id)}));
+  const unknown=lookups.filter(x=>!x.project).map(x=>x.id);
+  // Resolve first, then cap at four, so an unknown id never uses up a slot.
+  const picks=[...new Map(lookups.filter(x=>x.project).map(x=>[x.project.id,x.project])).values()].slice(0,4);
   const shown=picks.length?picks:all.slice(0,3);
   const picker=all.slice(0,40);
-  const inspected=await Promise.all(shown.map(async p=>({...p,repo:await inspectRepository(p.github_repo)})));
+  const inspected=await Promise.all(shown.map(async p=>({...p,repo:await inspectRepository(p.github_repo,{light:true})})));
   const failed=inspected.filter(p=>!p.repo.ok);
 
   const architectureKeys=['Frontend','Backend / API','Database','AI / LLM','RAG / Retrieval','Agents / Orchestration','Authentication','Deployment','Testing','Observability'];
   const technologyKeys=['Next.js','React','Python','FastAPI','Flask','Express','MongoDB','PostgreSQL','Supabase','Tailwind CSS','LangChain','LlamaIndex','OpenAI','Gemini','Vector DB','Docker','MCP'];
 
-  return <div className="shell"><Nav/><main className="main">
+  return <div className="shell"><Nav/><main id="main" className="main">
     <div className="eyebrow">Architecture research</div>
     <h1 className="title">Compare projects.</h1>
     <p className="sub">Put 2–4 repositories side-by-side and compare their public source signals, architecture fingerprints, technologies, and engineering structure.</p>
@@ -39,6 +46,8 @@ export default async function Compare({searchParams}){
         {picker.slice(0,20).map(p=><Link className="chip" key={p.id} href={'/compare?projects='+encodeURIComponent([...new Set([...picks.map(x=>x.id),p.id])].slice(0,4).join(','))}>{p.project_name}</Link>)}
       </div>
     </form>
+
+    {unknown.length?<p className="notice section" role="status">{unknown.length===1?'One project id was not recognised and was ignored':unknown.length+' project ids were not recognised and were ignored'}: {unknown.slice(0,5).join(', ')}.</p>:null}
 
     {failed.length?<p className="notice section">Repository evidence is unavailable for {failed.map(p=>p.project_name).join(', ')}: {failed[0].repo.error} Source-data rows below are still shown.</p>:null}
 

@@ -56,3 +56,15 @@ test('legacy rank ids still resolve', () => {
   assert.equal(findProject(projects, 'nope'), null);
   assert.equal(slugifyRepo('https://github.com/Some-User/My_Repo.git'), 'some-user-my-repo');
 });
+
+test('decodeEntities: invalid numeric references never throw and are left as written', async () => {
+  const { decodeEntities } = await import('../lib/dataset.js');
+  assert.equal(decodeEntities('a &#99999999999; b'), 'a &#99999999999; b');
+  assert.equal(decodeEntities('&#x110000; &#xD800; &#0;'), '&#x110000; &#xD800; &#0;');
+  assert.equal(decodeEntities('&#65; &#x42; &amp; &lt;'), 'A B & <');
+});
+
+test('decodeEntities: a single pass, so escaped entities are not decoded twice', async () => {
+  const { decodeEntities } = await import('../lib/dataset.js');
+  assert.equal(decodeEntities('&amp;lt;b&amp;gt;'), '&lt;b&gt;');
+});

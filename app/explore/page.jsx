@@ -2,19 +2,29 @@ import Nav from '@/components/Nav';
 import ProjectCard from '@/components/ProjectCard';
 import {getProjects,classify,relevance,hiddenGem} from '@/lib/source';
 
+export const metadata={title:'Explore'};
+
 const tags=['all','agents','rag','security','voice','vision','governance','civic','devtools'];
 const tagLabels={all:'All',agents:'AI Agents',rag:'RAG',security:'Security',voice:'Voice',vision:'Vision / OCR',governance:'Governance',civic:'Civic',devtools:'Developer Tools'};
 
+const SORTS=[['rank','Rank'],['relevance','Relevance'],['gem','Hidden gem'],['stars','Stars'],['votes','Votes'],['score','Community'],['name','Name']];
+const SORT_KEYS=SORTS.map(([key])=>key);
+const PAGE_SIZE=60;
+
 export default async function Explore({searchParams}){
   const sp=await searchParams;
-  const q=String(sp?.q||'').trim().toLowerCase();
+  const rawQ=String(sp?.q||'').trim().slice(0,200);
+  const q=rawQ.toLowerCase();
+  const words=q.split(/\s+/).filter(Boolean);
   const tag=tags.includes(sp?.tag)?sp.tag:'all';
-  const sort=sp?.sort||'rank';
+  const sort=SORT_KEYS.includes(sp?.sort)?sp.sort:'rank';
+  const requestedPage=Number.parseInt(sp?.page,10);
   const projects=await getProjects();
 
   const shown=projects.filter(p=>{
     const t=(p.project_name+' '+p.description+' '+p.github_repo).toLowerCase();
-    if(q&&!t.includes(q)) return false;
+    // Every word must appear somewhere, so multi-word searches narrow rather than fail.
+    if(words.some(w=>!t.includes(w))) return false;
     if(tag!=='all'&&!classify(p)[tag]) return false;
     return true;
   });
@@ -29,18 +39,32 @@ export default async function Explore({searchParams}){
     return a.rank-b.rank;
   });
 
-  const makeUrl=(nextTag=tag,nextSort=sort)=>'/explore?tag='+nextTag+'&sort='+nextSort+(q?'&q='+encodeURIComponent(q):'');
+  const pages=Math.max(1,Math.ceil(sorted.length/PAGE_SIZE));
+  const page=Number.isInteger(requestedPage)?Math.min(Math.max(requestedPage,1),pages):1;
+  const visible=sorted.slice((page-1)*PAGE_SIZE,page*PAGE_SIZE);
+
+  const makeUrl=(nextTag=tag,nextSort=sort,nextPage=1)=>{
+    const params=new URLSearchParams();
+    if(nextTag!=='all') params.set('tag',nextTag);
+    if(nextSort!=='rank') params.set('sort',nextSort);
+    if(rawQ) params.set('q',rawQ);
+    if(nextPage>1) params.set('page',String(nextPage));
+    const query=params.toString();
+    return '/explore'+(query?'?'+query:'');
+  };
 
   return (
     <div className="shell">
       <Nav/>
-      <main className="main">
+      <main id="main" className="main">
         <div className="eyebrow">Project explorer</div>
         <h1 className="title">{projects.length} projects, one research surface.</h1>
         <p className="sub">Search the published project metadata. Category chips and relevance scores are Atlas-derived research signals, not official BharatCode classifications.</p>
 
-        <form className="search">
-          <input name="q" defaultValue={sp?.q||''} placeholder="Search name, description or repository…" aria-label="Search projects"/>
+        <form className="search" action="/explore">
+          {tag!=='all'&&<input type="hidden" name="tag" value={tag}/>}
+          {sort!=='rank'&&<input type="hidden" name="sort" value={sort}/>}
+          <input name="q" defaultValue={rawQ} maxLength={200} placeholder="Search name, description or repository…" aria-label="Search projects"/>
           <button className="button" type="submit">Search</button>
         </form>
 
@@ -51,23 +75,22 @@ export default async function Explore({searchParams}){
         <div className="sectionhead section" style={{marginTop:20}}>
           <div>
             <h2>{shown.length} result{shown.length===1?'':'s'}</h2>
-            <p>{q?'Search: “'+q+'” · ':''}{tag==='all'?'All signals':'Signal: '+tagLabels[tag]}</p>
+            <p>{rawQ?'Search: “'+rawQ+'” · ':''}{tag==='all'?'All signals':'Signal: '+tagLabels[tag]}</p>
           </div>
           <div className="filters">
-            {[
-              ['rank','Rank'],
-              ['relevance','Relevance'],
-              ['gem','Hidden gem'],
-              ['stars','Stars'],
-              ['votes','Votes'],
-              ['score','Community'],
-              ['name','Name']
-            ].map(([value,label])=><a key={value} className={'chip '+(sort===value?'on':'')} href={makeUrl(tag,value)}>{label}</a>)}
+            {SORTS.map(([value,label])=><a key={value} className={'chip '+(sort===value?'on':'')} href={makeUrl(tag,value)}>{label}</a>)}
           </div>
         </div>
 
         {sorted.length ? (
-          <div className="grid">{sorted.map(p=><ProjectCard key={p.id} p={p}/>)}</div>
+          <>
+            <div className="grid">{visible.map(p=><ProjectCard key={p.id} p={p}/>)}</div>
+            {pages>1&&<nav className="filters section" aria-label="Pagination" style={{justifyContent:'center'}}>
+              {page>1&&<a className="chip" href={makeUrl(tag,sort,page-1)} rel="prev">← Previous</a>}
+              <span className="chip" aria-current="page">Page {page} of {pages}</span>
+              {page<pages&&<a className="chip" href={makeUrl(tag,sort,page+1)} rel="next">Next →</a>}
+            </nav>}
+          </>
         ) : (
           <div className="panel section empty">
             <h2>No projects matched</h2>

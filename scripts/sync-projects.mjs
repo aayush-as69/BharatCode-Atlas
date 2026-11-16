@@ -1,12 +1,13 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { decodeEntities, finalizeProjects, validateDataset } from '../lib/dataset.js';
+import { finalizeProjects, validateDataset } from '../lib/dataset.js';
 
 const SOURCE = 'https://bharatcode.ai/hackathon/projects';
 const OUTPUT = path.join(process.cwd(), 'data', 'projects.json');
 
 function clean(value = '') {
-  return decodeEntities(value.replace(/<[^>]+>/g, '')).replace(/\s+/g, ' ').trim();
+  // Entities are decoded once, later, by finalizeProjects.
+  return value.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
 }
 
 function numberFrom(value = '') {
