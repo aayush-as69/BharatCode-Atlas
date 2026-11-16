@@ -14,7 +14,7 @@ const call = (handler, body, { ip = nextIp(), headers = {}, raw } = {}) =>
   handler(new Request('http://atlas.test/api', {
     method: 'POST',
     body: raw ?? JSON.stringify(body),
-    headers: { 'content-type': 'application/json', 'x-real-ip': ip, ...headers },
+    headers: { 'content-type': 'application/json', 'x-forwarded-for': ip, ...headers },
     duplex: 'half'
   }));
 
@@ -48,7 +48,7 @@ test('research: chunked oversized body is rejected even without Content-Length',
   const body = new ReadableStream({
     pull(c) { if (sent > 40_000) return c.close(); c.enqueue(new TextEncoder().encode('a'.repeat(2048))); sent += 2048; }
   });
-  const req = new Request('http://atlas.test/api', { method: 'POST', body, headers: { 'x-real-ip': nextIp() }, duplex: 'half' });
+  const req = new Request('http://atlas.test/api', { method: 'POST', body, headers: { 'content-type': 'application/json', 'x-forwarded-for': nextIp() }, duplex: 'half' });
   assert.equal((await research(req)).status, 413);
 });
 
@@ -153,4 +153,31 @@ test('for-you: caps profiles at 5 and rate limits per client', async () => {
     for (let i = 0; i < 11; i++) last = await call(forYou, { interests: ['Security'] }, { ip });
     assert.equal(last.status, 429);
   } finally { net.restore(); }
+});
+
+test('research: forged x-real-ip does not evade the limit (not trusted off-platform)', async () => {
+  const statuses = [];
+  for (let i = 1; i <= 7; i++) {
+    const req = new Request('http://atlas.test/api', { method: 'POST', body: JSON.stringify({ question: 'voice' }), headers: { 'content-type': 'application/json', 'x-forwarded-for': '172.16.0.50', 'x-real-ip': `9.9.9.${i}` }, duplex: 'half' });
+    statuses.push((await research(req)).status);
+  }
+  assert.ok(statuses.includes(429), String(statuses));
+});
+
+test('research: requires a JSON content type and rejects cross-site requests', async () => {
+  const plain = new Request('http://atlas.test/api', { method: 'POST', body: '{"question":"voice"}', headers: { 'content-type': 'text/plain', 'x-forwarded-for': nextIp() }, duplex: 'half' });
+  assert.equal((await research(plain)).status, 415);
+  const cross = await call(research, { question: 'voice' }, { headers: { 'sec-fetch-site': 'cross-site' } });
+  assert.equal(cross.status, 403);
+});
+
+test('research: a stalled body is answered with 408 and does not hold a model slot', async () => {
+  const { readBodyCapped, BodyTimeoutError } = await import('../lib/http.js');
+  const stalled = new Request('http://atlas.test/api', { method: 'POST', body: new ReadableStream({ start() {} }), headers: { 'content-type': 'application/json' }, duplex: 'half' });
+  await assert.rejects(() => readBodyCapped(stalled, 1000, 50), BodyTimeoutError);
+});
+
+test('for-you: requires JSON content type', async () => {
+  const req = new Request('http://atlas.test/api', { method: 'POST', body: '{}', headers: { 'content-type': 'text/plain', 'x-forwarded-for': nextIp() }, duplex: 'half' });
+  assert.equal((await forYou(req)).status, 415);
 });

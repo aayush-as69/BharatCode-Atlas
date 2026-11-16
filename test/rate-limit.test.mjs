@@ -23,8 +23,11 @@ test('client key ignores a forged leftmost X-Forwarded-For hop', () => {
   const h = (o) => new Headers(o);
   assert.equal(getClientKey(h({ 'x-forwarded-for': '1.1.1.1, 9.9.9.9' })), '9.9.9.9');
   assert.equal(getClientKey(h({ 'x-forwarded-for': '6.6.6.6, 9.9.9.9' })), '9.9.9.9', 'spoofing the first hop does not change the key');
-  assert.equal(getClientKey(h({ 'x-vercel-forwarded-for': '2.2.2.2', 'x-forwarded-for': '6.6.6.6' })), '2.2.2.2');
-  assert.equal(getClientKey(h({ 'x-real-ip': '3.3.3.3' })), '3.3.3.3');
+  assert.equal(getClientKey(h({ 'x-vercel-forwarded-for': '2.2.2.2', 'x-forwarded-for': '6.6.6.6' }), {}), '6.6.6.6', 'platform header ignored off-platform');
+  assert.equal(getClientKey(h({ 'x-vercel-forwarded-for': '2.2.2.2', 'x-forwarded-for': '6.6.6.6' }), { VERCEL: '1' }), '2.2.2.2');
+  assert.equal(getClientKey(h({ 'x-real-ip': '3.3.3.3' }), {}), 'unknown', 'x-real-ip is not trusted by default');
+  assert.equal(getClientKey(h({ 'x-real-ip': '3.3.3.3' }), { VERCEL: '1' }), '3.3.3.3');
+  assert.equal(getClientKey(h({ 'cf-connecting-ip': '4.4.4.4', 'x-forwarded-for': '6.6.6.6' }), { TRUSTED_IP_HEADER: 'CF-Connecting-IP' }), '4.4.4.4');
   assert.equal(getClientKey(h({})), 'unknown');
 });
 
