@@ -1,0 +1,29 @@
+name: Atlas dependency audit
+
+# Separate from CI so a newly published advisory never blocks an unrelated pull
+# request. It runs weekly and on demand, and fails visibly when there is a
+# high-severity advisory in production dependencies.
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Audit production dependencies
+        run: npm run audit:prod

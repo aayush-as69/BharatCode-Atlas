@@ -8,6 +8,32 @@ const interests=['AI / LLM','RAG / Retrieval','AI Agents','Security','Developer 
 const STORAGE='bharatcode-atlas-for-you';
 const MAX_PROFILES=5;
 
+// localStorage is user-editable and may hold data from an older version, so
+// nothing read from it is trusted: every field is checked and capped.
+const isText=v=>typeof v==='string';
+const textList=(v,max,len)=>(Array.isArray(v)?v.filter(isText).map(x=>x.slice(0,len)).slice(0,max):[]);
+function cleanMatch(x){
+  const p=x&&x.project;
+  if(!p||!isText(p.id)||!isText(p.project_name)) return null;
+  return {
+    project:{id:p.id.slice(0,200),project_name:p.project_name.slice(0,300),description:isText(p.description)?p.description.slice(0,1200):''},
+    score:Number.isFinite(x.score)?x.score:0,
+    reasons:textList(x.reasons,6,200)
+  };
+}
+function cleanResult(r){
+  if(!r||typeof r!=='object') return null;
+  const matches=list=>(Array.isArray(list)?list:[]).map(cleanMatch).filter(Boolean).slice(0,24);
+  const g=r.github&&typeof r.github==='object'?r.github:null;
+  return {
+    github:g?{login:isText(g.login)?g.login.slice(0,80):'',name:isText(g.name)?g.name.slice(0,120):null,bio:isText(g.bio)?g.bio.slice(0,400):null,profiles:textList(g.profiles,5,80),repoCount:Number.isFinite(g.repoCount)?g.repoCount:0}:null,
+    profileSummary:isText(r.profileSummary)?r.profileSummary.slice(0,400):'',
+    detected:textList(r.detected,12,60),
+    strongMatches:matches(r.strongMatches),
+    worthExploring:matches(r.worthExploring)
+  };
+}
+
 export default function ForYou(){
   const [github,setGithub]=useState('');
   const [repos,setRepos]=useState([]);
@@ -23,8 +49,8 @@ export default function ForYou(){
     try{
       const saved=JSON.parse(localStorage.getItem(STORAGE)||'null');
       if(saved){
-        setGithub(saved.github||''); setRepos(saved.repos||[]); setBuilding(saved.building||'');
-        setSelected(saved.selected||[]); setResult(saved.result||null);
+        setGithub(isText(saved.github)?saved.github.slice(0,200):''); setRepos(textList(saved.repos,5,200)); setBuilding(isText(saved.building)?saved.building.slice(0,1000):'');
+        setSelected(textList(saved.selected,12,60)); setResult(cleanResult(saved.result));
       }
     }catch{}
     setHydrated(true);
@@ -71,7 +97,7 @@ export default function ForYou(){
   const strong=result?.strongMatches||[];
   const worth=result?.worthExploring||[];
 
-  return <div className="shell"><Nav/><main className="main">
+  return <div className="shell"><Nav/><main id="main" className="main">
     <div className="eyebrow">Personal research mode</div>
     <h1 className="title">For You.</h1>
     <p className="sub">Build a research profile from your GitHub and interests. Atlas uses it to find projects worth studying.</p>

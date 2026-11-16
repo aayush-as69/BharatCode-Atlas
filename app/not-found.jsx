@@ -1,10 +1,10 @@
 import Link from 'next/link';
 import Nav from '@/components/Nav';
 
-export const metadata={title:'Not found · BharatCode Atlas'};
+export const metadata={title:'Not found'};
 
 export default function NotFound(){
-  return <div className="shell"><Nav/><main className="main">
+  return <div className="shell"><Nav/><main id="main" className="main">
     <div className="empty section" style={{marginTop:72}}>
       <div className="eyebrow">Error 404</div>
       <h1 className="title" style={{fontSize:36}}>Nothing here.</h1>

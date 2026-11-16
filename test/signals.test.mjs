@@ -64,3 +64,16 @@ test('scores stay within 0-100', () => {
     for (const s of [hiddenGem(p), researchScore(p)]) assert.ok(s >= 0 && s <= 100);
   }
 });
+
+test('buildUserProfile: everyday words do not switch interests on', () => {
+  const profile = buildUserProfile({
+    githubData: { bio: 'I write code, public repos on github, a workflow for model trains and calls', repos: [] },
+    building: 'a conversation about a call'
+  }).profile;
+  assert.deepEqual(Object.entries(profile).filter(([, on]) => on).map(([k]) => k), []);
+});
+
+test('buildUserProfile: genuine interest terms still match', () => {
+  const profile = buildUserProfile({ building: 'a voice agent with retrieval over a vector store' }).profile;
+  assert.ok(profile.voice && profile.agents && profile.rag);
+});

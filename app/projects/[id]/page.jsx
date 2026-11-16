@@ -11,15 +11,31 @@ const FLAG_NOTES={
   minimal_description:'The submitted description is very short, so description-based signals are weak.'
 };
 
+// Repository inspection is live data: render per request, never at build time.
+export const dynamic='force-dynamic';
+
+// A malformed escape such as %E0%A4%A in the URL must be a 404, not a 500.
+function safeDecode(value){
+  try{return decodeURIComponent(value);}catch{return null;}
+}
+
+export async function generateMetadata({params}){
+  const {id}=await params;
+  const decoded=safeDecode(id);
+  const p=decoded&&await findProject(decoded);
+  return {title:p?p.project_name:'Project'};
+}
+
 export default async function ProjectPage({params}){
   const {id}=await params;
-  const p=await findProject(decodeURIComponent(id));
+  const decoded=safeDecode(id);
+  const p=decoded?await findProject(decoded):null;
   if(!p) notFound();
   // Old rank-based links (/projects/p012) keep working and redirect to the stable id.
-  if(p.id!==id) redirect('/projects/'+encodeURIComponent(p.id));
+  if(p.id!==decoded) redirect('/projects/'+encodeURIComponent(p.id));
   const repo=await inspectRepository(p.github_repo);
 
-  return <div className="shell"><Nav/><main className="main detail">
+  return <div className="shell"><Nav/><main id="main" className="main detail">
     <Link className="back" href="/explore">← Back to explorer</Link>
     <div className="detailhead" style={{marginTop:16}}>
       <div><div className="eyebrow">Project #{p.rank}</div><h1>{p.project_name}</h1><p className="prose">{p.description}</p></div>

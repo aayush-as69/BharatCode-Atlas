@@ -3,6 +3,8 @@ import Nav from '@/components/Nav';
 import ProjectCard from '@/components/ProjectCard';
 import {getProjects,classify,hiddenGem,SIGNALS} from '@/lib/source';
 
+export const metadata={title:'Overview'};
+
 const categories=['agents','rag','security','voice','vision','governance','civic','devtools'];
 
 export default async function Home(){
@@ -15,7 +17,7 @@ export default async function Home(){
     .sort((a,b)=>hiddenGem(b)-hiddenGem(a)||a.rank-b.rank)
     .slice(0,5);
 
-  return <div className="shell"><Nav/><main className="main">
+  return <div className="shell"><Nav/><main id="main" className="main">
     <div className="eyebrow">Build League intelligence</div>
     <h1 className="title">Explore what builders built.</h1>
     <p className="sub">BharatCode Atlas turns the {projects.length}-project Build League dataset into a research workspace for discovering ideas, technical signals and projects worth investigating.</p>

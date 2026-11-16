@@ -331,3 +331,7 @@ html{scroll-behavior:smooth}
 .empty .button{margin-top:8px}
 
 button.button:disabled{opacity:.6;cursor:not-allowed}
+
+/* Skip link: visible only while focused */
+.skip{position:absolute;left:12px;top:-60px;z-index:100;background:var(--text);color:#0a0a0c;padding:10px 16px;border-radius:10px;font-weight:600}
+.skip:focus{top:12px}

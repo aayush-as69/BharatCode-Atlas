@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { installFetch, jsonResponse, b64 } from './helpers/mock-fetch.mjs';
 
 delete process.env.GITHUB_TOKEN;
-const { inspectRepository, parseRepoUrl, mapLimit } = await import('../lib/github.js');
+const { inspectRepository, parseRepoUrl, mapLimit, clearInspectionCache } = await import('../lib/github.js');
 
 const FAKE_KEY = 'abcdef123456ZZ';
 const files = {
@@ -21,7 +21,8 @@ const files = {
   'app/api/chat/route.js': 'export async function POST(){}'
 };
 
-function githubHandler(repoPath) {
+function githubHandler(repoPath, fileMap = files) {
+  const files = fileMap;
   return (url) => {
     if (url.endsWith(`/repos/${repoPath}`)) return jsonResponse({ full_name: repoPath, default_branch: 'main', stargazers_count: 3, forks_count: 1, open_issues_count: 0, language: 'JavaScript', updated_at: '2026-01-01T00:00:00Z', license: { spdx_id: 'MIT' } });
     if (url.includes('/git/trees/')) return jsonResponse({ truncated: false, tree: Object.keys(files).map((path) => ({ type: 'blob', path, size: files[path].length })) });
@@ -119,4 +120,41 @@ test('mapLimit preserves order and bounds concurrency', async () => {
   assert.deepEqual(out, [10, 2, 8, 4, 6, 12, 14]);
   assert.ok(peak <= 3, 'peak ' + peak);
   assert.deepEqual(await mapLimit([], 3, async () => 1), []);
+});
+
+test('inspection: manifests under secret-named paths are never fetched or parsed', async () => {
+  const tricky = {
+    'package.json': JSON.stringify({ dependencies: { react: '19' } }),
+    'secrets/package.json': JSON.stringify({ dependencies: { express: '4', mongodb: '6' } }),
+    'config/credentials/requirements.txt': 'fastapi\n',
+    'private/Dockerfile': 'FROM node:20\n',
+    'README.md': '# Demo'
+  };
+  const net = installFetch(githubHandler('o/secretpaths', tricky));
+  try {
+    const r = await inspectRepository('https://github.com/o/secretpaths');
+    assert.equal(r.ok, true);
+    assert.ok(!net.calls.some((u) => /secrets|credentials|private/.test(decodeURIComponent(u).replace(/^.*\/contents\//, ''))), 'blocked paths are not requested: ' + net.calls.join(' '));
+    assert.ok(!r.technologies.includes('Express') && !r.technologies.includes('FastAPI') && !r.technologies.includes('MongoDB'));
+    assert.ok(r.technologies.includes('React'));
+    assert.ok(!r.files.manifests.some((m) => /secrets|credentials|private/.test(m)));
+  } finally { net.restore(); }
+});
+
+test('inspection: README is found in any letter case and common extensions', async () => {
+  for (const name of ['Readme.md', 'README.rst', 'readme.markdown']) {
+    clearInspectionCache();
+    const net = installFetch(githubHandler('o/readme', { [name]: 'A RAG demo', 'package.json': '{}' }));
+    try {
+      const r = await inspectRepository('https://github.com/o/readme');
+      assert.equal(r.files.readme_found, true, name);
+    } finally { net.restore(); }
+  }
+});
+
+test('parseRepoUrl: unsafe owner or repo names are rejected', () => {
+  for (const bad of ['https://github.com/a%2Fb/c', 'https://github.com/../x', 'https://github.com/a/..', 'https://github.com/a b/c', 'https://github.com/o/r%00']) {
+    assert.deepEqual(parseRepoUrl(bad), { owner: null, repo: null }, bad);
+  }
+  assert.deepEqual(parseRepoUrl('https://github.com/Owner-1/repo.name_2'), { owner: 'Owner-1', repo: 'repo.name_2' });
 });

@@ -172,6 +172,13 @@ Copy `.env.example` to `.env.local` (git-ignored). All variables are optional:
 | `BHARATCODE_API_KEY` | Enables AI Researcher answers. Without it the page shows retrieved projects only. |
 | `BHARATCODE_BASE_URL` | Model API base URL (default `https://bharatcode.ai/api/model/v1`). |
 | `BHARATCODE_MODEL` | Model name (default `qwen-3.8-27b`). |
+| `TRUSTED_IP_HEADER` | Name of a request header that **your own proxy or CDN always sets** to the real client IP (for example `cf-connecting-ip`). Used to rate limit per client. |
+
+### API limits and client identity
+
+`/api/research` and `/api/for-you` accept only `application/json` bodies (415 otherwise), refuse browser-declared cross-site requests (403), cap the body at 8 KB, give up on a body that stalls for 5 seconds (408), and apply a per-client plus a global rate limit. `/api/research` also allows at most two model calls at once.
+
+Rate limits are keyed by client IP. Because a header the platform does not overwrite can be forged, Atlas trusts: the header named by `TRUSTED_IP_HEADER` when set; on Vercel, `x-vercel-forwarded-for` or `x-real-ip`; otherwise only the **last** `x-forwarded-for` hop. A bare `x-real-ip` is not trusted off-platform. Counters live in memory per server instance, so on serverless platforms this is a best-effort guard, not a global quota. Put a platform-level limit in front of the app if you need a hard one.
 
 ### Tests
 
@@ -234,7 +241,7 @@ npm test
 npm run build
 ```
 
-A separate, non-blocking `audit` job runs `npm run audit:prod` on every push and weekly, so a newly published advisory does not block unrelated pull requests. The workflow has read-only `contents` permission. Actions are pinned to full commit SHAs.
+A separate workflow, `atlas-audit.yml`, runs `npm run audit:prod` weekly and on demand (Actions → Atlas dependency audit → Run workflow). It is kept apart from CI so a newly published advisory does not block unrelated pull requests, and it fails visibly when one is found. Workflows have read-only `contents` permission, and actions are pinned to full commit SHAs.
 
 ## Deployment
 

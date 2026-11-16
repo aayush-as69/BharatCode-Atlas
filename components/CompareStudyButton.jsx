@@ -1,11 +1,12 @@
 'use client';
 
 import {useState} from 'react';
-import Link from 'next/link';
+import {useRouter} from 'next/navigation';
 import {addResearchEntry,newEntryId} from '@/lib/research-storage';
 
 export default function CompareStudyButton({projects}){
   const [error,setError]=useState('');
+  const router=useRouter();
 
   function save(){
     const now=new Date().toISOString();
@@ -26,11 +27,12 @@ export default function CompareStudyButton({projects}){
       createdAt:now,
       updatedAt:now
     });
-    setError(result.ok?'':result.error);
+    if(result.ok){setError('');router.push('/research');}
+    else setError(result.error);
   }
 
   return <>
-    <Link className="button primary" href="/research" onClick={save}>Study this comparison →</Link>
+    <button className="button primary" type="button" onClick={save}>Study this comparison →</button>
     {error?<span role="alert" className="notice">{error}</span>:null}
   </>;
 }
