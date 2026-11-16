@@ -20,6 +20,11 @@ export default async function Home(){
     <h1 className="title">Explore what builders built.</h1>
     <p className="sub">BharatCode Atlas turns the {projects.length}-project Build League dataset into a research workspace for discovering ideas, technical signals and projects worth investigating.</p>
 
+    <div className="heroactions">
+      <Link className="button primary" href="/explore">Explore {projects.length} projects</Link>
+      <Link className="button" href="/ai-researcher">Ask the AI researcher</Link>
+    </div>
+
     <div className="stats">
       <div className="stat"><b>{projects.length}</b><span>Projects</span></div>
       <div className="stat"><b>{counts.agents}</b><span>Agent signals</span></div>
@@ -48,18 +53,12 @@ export default async function Home(){
     </div>
 
     <div className="section">
-      <div className="sectionhead">
-        <div><h2>Highest GitHub traction</h2><p>Source metrics from the BharatCode project page.</p></div>
-        <Link className="button" href="/explore">View all</Link>
-      </div>
+      <div className="sectionhead"><div><h2>Highest GitHub traction</h2><p>Source metrics from the live project page.</p></div><Link className="button" href="/explore">View all</Link></div>
       <div className="grid">{top.map(p=><ProjectCard key={p.id} p={p}/>)}</div>
     </div>
 
     <div className="section">
-      <div className="sectionhead">
-        <div><h2>Worth investigating</h2><p>Transparent heuristic hidden-gem signal, not a quality verdict.</p></div>
-        <Link className="button" href="/hidden-gems">See hidden gems</Link>
-      </div>
+      <div className="sectionhead"><div><h2>Worth investigating</h2><p>Transparent heuristic hidden-gem signal, not a quality verdict.</p></div><Link className="button" href="/hidden-gems">See hidden gems</Link></div>
       <div className="grid">{gems.map(p=><ProjectCard key={p.id} p={p}/>)}</div>
     </div>
 

@@ -30,7 +30,7 @@ export default function CompareStudyButton({projects}){
   }
 
   return <>
-    <Link className="button" href="/research" onClick={save}>Study this comparison →</Link>
+    <Link className="button primary" href="/research" onClick={save}>Study this comparison →</Link>
     {error?<span role="alert" className="notice">{error}</span>:null}
   </>;
 }

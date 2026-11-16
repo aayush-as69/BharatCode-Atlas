@@ -101,7 +101,7 @@ export default function ForYou(){
           {error&&<p role="alert" className="notice" style={{marginTop:12}}>{error}</p>}
           <div className="panel" style={{marginTop:14,padding:12}}>
             <b style={{fontSize:12}}>Privacy note</b>
-            <p style={{fontSize:11,color:'var(--muted)',lineHeight:1.6,margin:'6px 0 0'}}>Atlas sends the GitHub usernames, description and interests you enter to its server so it can read public GitHub profile data and score projects; it does not store them there. Your settings and results are saved only in this browser's local storage. Atlas never asks for your GitHub password or private repository access.</p>
+            <p style={{fontSize:12,color:'var(--muted)',lineHeight:1.6,margin:'6px 0 0'}}>Atlas sends the GitHub usernames, description and interests you enter to its server so it can read public GitHub profile data and score projects; it does not store them there. Your settings and results are saved only in this browser's local storage. Atlas never asks for your GitHub password or private repository access.</p>
           </div>
         </div>
       </div>

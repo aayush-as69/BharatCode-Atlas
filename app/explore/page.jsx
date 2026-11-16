@@ -69,7 +69,7 @@ export default async function Explore({searchParams}){
         {sorted.length ? (
           <div className="grid">{sorted.map(p=><ProjectCard key={p.id} p={p}/>)}</div>
         ) : (
-          <div className="panel section">
+          <div className="panel section empty">
             <h2>No projects matched</h2>
             <p className="prose">Try a broader search or remove the category filter.</p>
             <a className="button" href="/explore">Reset explorer</a>

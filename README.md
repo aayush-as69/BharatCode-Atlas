@@ -195,7 +195,7 @@ The application can still inspect public repositories without a token subject to
 
 ## AI Researcher
 
-The AI Researcher first retrieves matching Atlas project records and then uses the configured model provider when available.
+The AI Researcher first retrieves matching Atlas project records using a stopword-filtered, word-boundary keyword retrieval (ranked by distinct term hits), and then uses the configured model provider when available. Requests are rate-limited, bounded in size, and the model call enforces a timeout.
 
 Retrieval tokenizes the question, drops stopwords, keeps short technical terms such as `rag`, `llm` and `ocr`, expands a few synonyms, and ranks projects by weighted hits (name matches count more than description matches). Project text is passed to the model as fenced, untrusted data.
 
@@ -221,7 +221,11 @@ GitHub Actions runs, on Node 20 and 22:
 ```text
 npm ci
     ↓
-npm run verify:js
+npm run verify:js        (JavaScript-only rule + dataset integrity at build time)
+    ↓
+npm test                 (node --test: retrieval, redaction, source scoring)
+    ↓
+npm run audit:prod
     ↓
 npm run verify:data
     ↓
@@ -230,7 +234,7 @@ npm test
 npm run build
 ```
 
-A separate, non-blocking `audit` job runs `npm run audit:prod` on every push and weekly, so a newly published advisory does not block unrelated pull requests. The workflow has read-only `contents` permission. Actions are referenced by major-version tag; pin them to commit SHAs if your policy requires it.
+A separate, non-blocking `audit` job runs `npm run audit:prod` on every push and weekly, so a newly published advisory does not block unrelated pull requests. The workflow has read-only `contents` permission. Actions are pinned to full commit SHAs.
 
 ## Deployment
 
