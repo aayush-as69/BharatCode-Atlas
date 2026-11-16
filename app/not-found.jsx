@@ -5,12 +5,11 @@ export const metadata={title:'Not found · BharatCode Atlas'};
 
 export default function NotFound(){
   return <div className="shell"><Nav/><main className="main">
-    <div className="eyebrow">404</div>
-    <h1 className="title">We could not find that page.</h1>
-    <p className="sub">The project or page you asked for does not exist in the Atlas dataset. It may have been removed after a data refresh.</p>
-    <div style={{display:'flex',gap:8,marginTop:20,flexWrap:'wrap'}}>
-      <Link className="button" href="/explore">Browse all projects →</Link>
-      <Link className="button" href="/">Back to overview</Link>
+    <div className="empty section" style={{marginTop:72}}>
+      <div className="eyebrow">Error 404</div>
+      <h1 className="title" style={{fontSize:36}}>Nothing here.</h1>
+      <p className="sub">The project or page you asked for does not exist in the Atlas dataset. It may have been removed after a data refresh.</p>
+      <Link className="button primary" href="/explore">Back to explorer</Link>
     </div>
   </main></div>;
 }

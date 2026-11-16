@@ -1,17 +1,31 @@
 node_modules
 .next
 out
+build
+dist
 *.tsbuildinfo
 next-env.d.ts
 
-# Environment files: never commit real secrets. .env.example is the template.
+# Environment files (the example file is tracked)
 .env
 .env.*
 !.env.example
 
-# Platform and editor files
-.vercel
-.DS_Store
+# Logs
 *.log
 npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.idea
+.vscode/*
+!.vscode/extensions.json
+
+# Deploy / tooling artifacts
+.vercel
 coverage
+.npm
+.cache
