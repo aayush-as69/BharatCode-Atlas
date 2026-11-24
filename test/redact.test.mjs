@@ -101,3 +101,10 @@ test('redact: sensitive assignment nested inside a quoted value', () => {
   assert.ok(!out.includes('abcdef123456ZZ'), out);
   assert.ok(out.includes('node server.js'), 'surrounding command is kept');
 });
+
+test('redact: compound names are recognised in either order', () => {
+  // No digits in the value: only the strong-name rule (not the weak "key" rule) masks these.
+  for (const line of ['KEY_PRIVATE=abcdefghijkl', 'key_api: "abcdefghijkl"', 'TOKEN_ACCESS=abcdefghijkl']) {
+    assert.ok(!redactSecrets(line).includes('abcdefghijkl'), line);
+  }
+});

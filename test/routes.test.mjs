@@ -181,3 +181,19 @@ test('for-you: requires JSON content type', async () => {
   const req = new Request('http://atlas.test/api', { method: 'POST', body: '{}', headers: { 'content-type': 'text/plain', 'x-forwarded-for': nextIp() }, duplex: 'half' });
   assert.equal((await forYou(req)).status, 415);
 });
+
+test('for-you: a profile that does not exist is reported, not silently dropped', async () => {
+  const net = installFetch((url) => {
+    if (/\/users\/ghost-user$/.test(url)) return jsonResponse({ message: 'Not Found' }, 404);
+    if (/\/users\/real-user$/.test(url)) return jsonResponse({ login: 'real-user', name: 'Real', bio: 'I build voice agents' });
+    if (/\/users\/real-user\/repos/.test(url)) return jsonResponse([{ name: 'r', description: 'speech tools', language: 'Python', topics: ['voice'] }]);
+    throw new Error('unexpected ' + url);
+  });
+  try {
+    const res = await call(forYou, { githubProfiles: ['real-user', 'ghost-user'] });
+    assert.equal(res.status, 200);
+    const body = await res.json();
+    assert.deepEqual(body.notFound, ['ghost-user']);
+    assert.deepEqual(body.github.profiles, ['real-user']);
+  } finally { net.restore(); }
+});

@@ -77,3 +77,26 @@ test('buildUserProfile: genuine interest terms still match', () => {
   const profile = buildUserProfile({ building: 'a voice agent with retrieval over a vector store' }).profile;
   assert.ok(profile.voice && profile.agents && profile.rag);
 });
+
+test('selectHiddenGems: skips minimal rows and shows each repository once', async () => {
+  const { selectHiddenGems } = await import('../lib/signals.js');
+  const base = { votes: 0, github_stars: 0, community_score: 0, description: 'An agent that uses retrieval and voice over a vector store for security review.' };
+  const rows = [
+    { ...base, id: 'a', rank: 1, project_name: 'A', github_repo: 'https://github.com/o/shared' },
+    { ...base, id: 'a-2', rank: 2, project_name: 'A2', github_repo: 'https://github.com/O/Shared', votes: 40 },
+    { ...base, id: 'b', rank: 3, project_name: 'B', github_repo: 'https://github.com/o/tiny', quality_flags: ['minimal_description'] },
+    { ...base, id: 'c', rank: 4, project_name: 'C', github_repo: 'https://github.com/o/other' }
+  ];
+  const out = selectHiddenGems(rows, 10);
+  assert.deepEqual(out.map((p) => p.id).sort(), ['a', 'c']);
+  assert.ok(out.every((p) => typeof p.gem === 'number' && typeof p.why === 'string'));
+  assert.equal(selectHiddenGems(rows, 1).length, 1);
+});
+
+test('selectHiddenGems: real dataset never repeats a repository', () => {
+  return import('../lib/signals.js').then(({ selectHiddenGems }) => {
+    const out = selectHiddenGems(projects, 60);
+    assert.equal(new Set(out.map((p) => p.github_repo.toLowerCase())).size, out.length);
+    assert.ok(out.every((p) => !(p.quality_flags || []).includes('minimal_description')));
+  });
+});

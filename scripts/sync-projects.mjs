@@ -45,6 +45,12 @@ const dataset = {
   projects
 };
 
+// A layout change on the source page can yield a few "valid" rows. Refuse a
+// large unexplained drop; pass --allow-shrink after checking it is genuine.
+if (previousCount && projects.length < previousCount * 0.5 && !process.argv.includes('--allow-shrink')) {
+  throw new Error(`Parsed ${projects.length} projects but the committed dataset has ${previousCount}. The source layout may have changed; rerun with --allow-shrink if this is expected.`);
+}
+
 const problems = validateDataset(dataset);
 if (problems.length) {
   console.error('Refusing to write an invalid dataset:');

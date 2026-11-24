@@ -71,7 +71,7 @@ export default function Nav(){
       </nav>
 
       <div className="sidefoot">
-        <b>294 published projects</b>
+        <b>BharatCode Build League</b>
         Atlas scores are derived research signals, not official verdicts.
       </div>
     </aside>

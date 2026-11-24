@@ -81,14 +81,17 @@ export async function POST(request) {
 
   try {
     let githubData = null;
+    let notFound = [];
     if (logins.length) {
       const token = process.env.GITHUB_TOKEN;
       const headers = { accept: 'application/vnd.github+json', ...(token ? { authorization: 'Bearer ' + token } : {}) };
-      const loaded = (await mapLimit(logins, 3, (login) => loadProfile(login, headers))).filter(Boolean);
+      const results = await mapLimit(logins, 3, (login) => loadProfile(login, headers));
+      const loaded = results.filter(Boolean);
+      notFound = logins.filter((_, i) => !results[i]);
       if (!loaded.length) return json({ error: 'No valid public GitHub profiles were found.' }, 404);
       githubData = {
         login: loaded[0].user.login, name: loaded[0].user.name, bio: loaded[0].user.bio,
-        repos: loaded.flatMap((p) => p.repos), profiles: logins
+        repos: loaded.flatMap((p) => p.repos), profiles: logins.filter((l) => !notFound.includes(l))
       };
     }
 
@@ -104,6 +107,7 @@ export async function POST(request) {
     return json({
       github: githubData && { login: githubData.login, name: githubData.name, bio: githubData.bio, profiles: githubData.profiles, repoCount: githubData.repos.length },
       profileSummary: active.length ? 'Atlas detected interest in ' + active.slice(0, 5).join(', ') + '.' : 'Atlas could not detect specific interests. Try selecting some below.',
+      notFound,
       detected: userProfile.detected,
       recommendations,
       strongMatches: recommendations.filter((x) => x.score >= STRONG_MATCH_SCORE).slice(0, 6),

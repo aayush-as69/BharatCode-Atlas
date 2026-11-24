@@ -28,6 +28,7 @@ function cleanResult(r){
   return {
     github:g?{login:isText(g.login)?g.login.slice(0,80):'',name:isText(g.name)?g.name.slice(0,120):null,bio:isText(g.bio)?g.bio.slice(0,400):null,profiles:textList(g.profiles,5,80),repoCount:Number.isFinite(g.repoCount)?g.repoCount:0}:null,
     profileSummary:isText(r.profileSummary)?r.profileSummary.slice(0,400):'',
+    notFound:textList(r.notFound,5,80),
     detected:textList(r.detected,12,60),
     strongMatches:matches(r.strongMatches),
     worthExploring:matches(r.worthExploring)
@@ -132,6 +133,8 @@ export default function ForYou(){
         </div>
       </div>
     </section>
+
+    {result?.notFound?.length?<p className="notice section" role="status">Some profiles were not found and were left out: {result.notFound.join(', ')}. These recommendations reflect only the profiles that were found.</p>:null}
 
     {result&&<section className="section">
       <div className="panel">

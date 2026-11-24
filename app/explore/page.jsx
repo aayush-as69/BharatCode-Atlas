@@ -22,7 +22,7 @@ export default async function Explore({searchParams}){
   const projects=await getProjects();
 
   const shown=projects.filter(p=>{
-    const t=(p.project_name+' '+p.description+' '+p.github_repo).toLowerCase();
+    const t=(p.project_name+' '+p.description+' '+String(p.github_repo).replace(/^https?:\/\/github\.com\//i,'')).toLowerCase();
     // Every word must appear somewhere, so multi-word searches narrow rather than fail.
     if(words.some(w=>!t.includes(w))) return false;
     if(tag!=='all'&&!classify(p)[tag]) return false;
